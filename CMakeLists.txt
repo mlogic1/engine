@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.10.2)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+project(engine CXX)
+
+SET (ENGINE_INCLUDE_DIR ./include)
+SET (ENGINE_SOURCE_DIR ./src)
+
+file(GLOB_RECURSE ENGINE_HEADER_FILES ${ENGINE_INCLUDE_DIR}/*.h)
+file(GLOB_RECURSE ENGINE_SOURCE_FILES ${ENGINE_SOURCE_DIR}/*.cpp)
+
+include_directories(${ENGINE_INCLUDE_DIR})
+
+SET (ENGINE_ALL_FILES
+    ${ENGINE_HEADER_FILES}
+    ${ENGINE_SOURCE_FILES}
+)
+
+
+add_library(engine STATIC ${ENGINE_ALL_FILES})
