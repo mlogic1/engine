@@ -36,9 +36,9 @@ namespace SceneSystem
 			};*/
 
 			Rect bgRect = { 0, 0, 1280, 720 };
-			Rect spriteRect = { 100, 100, 150, 150 };
+			Rect spriteRect = { 650, 630, 632, 84 };
 
-			mainSprite = new Sprite(orthoShader, spriteRect, "doge.png");
+			mainSprite = new Sprite(orthoShader, spriteRect, "logo.png");
 			bgSprite = new Sprite(orthoShader, bgRect, "bg.jpg");
 		}
 		catch (std::string err)
@@ -46,8 +46,8 @@ namespace SceneSystem
 			Log::Write(err, Log::LogType::ERR);
 		}
 		
-		std::list<std::string> addTextures = { "xdoge.png" };
-		t = new TextureSet(addTextures);
+		//std::list<std::string> addTextures = { "xdoge.png" };
+		//t = new TextureSet(addTextures);
 	}
 
 	SceneMainMenu::~SceneMainMenu()

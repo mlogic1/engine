@@ -1,11 +1,11 @@
+// TODO specific scenes need to be moved to main project
+
 #ifndef SCENE_MAIN_MENU_H
 #define SCENE_MAIN_MENU_H
 
 #include "Scene.h"
-
 #include "Shader.h"
 #include "Sprite.h"
-
 #include "TextureSet.h"
 
 

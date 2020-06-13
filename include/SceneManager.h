@@ -1,5 +1,5 @@
 /**
-	Scene manager handles scene switching
+	Scene manager handles scene updates, rendering and switching
 
 	@author mlogic1
 	@date 16.06.2019.
@@ -15,22 +15,17 @@ namespace SceneSystem
 	class SceneManager
 	{
 	public:
-		static SceneManager* GetSceneManager();
+		SceneManager();
+		SceneManager(const SceneManager& SceneManager) = delete;
+		~SceneManager();
 
 		void Update();
 		void SwitchScene(Scene* newScene);
 		void OnKey(System::Key Key);
 
 	private:
-		SceneManager();
-		SceneManager(const SceneManager& SceneManager);
-		~SceneManager();
-		
-		static SceneManager *m_instance;
-		Scene* m_currentScene;
-
+		Scene* m_currentScene = nullptr;
 	};
-	
 }
 
 #endif // SCENE_MANAGER_H

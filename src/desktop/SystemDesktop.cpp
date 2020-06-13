@@ -42,7 +42,7 @@ namespace System
 
 	void SystemDesktop::Update()
 	{
-		//SceneSystem::SceneManager::GetSceneManager()->Update();
+		m_sceneManager.Update();
 
 		glfwSwapBuffers(m_gameWindow);
 		glfwPollEvents();
@@ -55,12 +55,62 @@ namespace System
 
 	bool SystemDesktop::LoadBinaryDataFromAssets(const std::string fileName, unsigned char *& data, off_t & length)
 	{
-		return false;
+		std::ifstream fileInStream(fileName, std::ios::binary);
+
+		if (fileInStream.is_open())
+		{
+			fileInStream.ignore(std::numeric_limits<std::streamsize>::max());
+			length = fileInStream.gcount();
+			std::cout << "Loading file " << fileName << " | " << length << " bytes" << std::endl;
+
+			fileInStream.seekg(0, std::ios_base::beg);
+
+			char* buffer = new char[length + 1];
+			fileInStream.read(buffer, length);
+			buffer[length] = 0;
+			data = (unsigned char*)buffer;
+
+		}
+		else
+		{
+			std::string error = "Missing file: " + fileName;
+			throw error;
+			return false;
+		}
+
+		fileInStream.close();
+		return true;
 	}
 
 	bool SystemDesktop::LoadStringDataFromAssets(const std::string fileName, std::string & data)
 	{
-		return false;
+		std::string result = "";
+
+		std::ifstream fileInStream(fileName);
+
+		std::string line;
+		std::string temp = "";
+
+		// load data from file
+		std::cout << "Loading shader: " << fileName << std::endl;
+
+		if (fileInStream.is_open())
+		{
+			while (fileInStream.good())
+			{
+				std::getline(fileInStream, line);
+				temp += line + "\n";
+			}
+		}
+		else
+		{
+			std::string error = "Missing file: " + fileName;
+			throw error;
+			return false;
+		}
+
+		data = temp;
+		return true;
 	}
 
 	GLFWwindow * SystemDesktop::InitWindow()

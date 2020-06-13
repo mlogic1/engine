@@ -6,17 +6,6 @@
 
 namespace SceneSystem
 {
-	SceneManager* SceneManager::m_instance = nullptr;
-
-	SceneManager * SceneManager::GetSceneManager()
-	{
-		if (m_instance == nullptr)
-		{
-			m_instance = new SceneManager();
-		}
-		return m_instance;
-	}
-
 	void SceneManager::Update()
 	{
 		if (this->m_currentScene != nullptr)
@@ -39,7 +28,6 @@ namespace SceneSystem
 
 	SceneManager::SceneManager()
 	{
-		m_currentScene = nullptr;
 	}
 
 

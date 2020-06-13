@@ -1,6 +1,7 @@
 #ifndef SYSTEMBASE_H
 #define SYSTEMBASE_H
 
+#include "SceneManager.h"
 #include <string>
 
 namespace System
@@ -29,6 +30,8 @@ namespace System
 
 		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) = 0;
 		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) = 0;
+
+		SceneSystem::SceneManager m_sceneManager;	// TODO move to proctected part
 
 	protected:
 		// rendering mode // TODO maybe move this to a global configuration source file
