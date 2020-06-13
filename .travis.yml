@@ -1,2 +1,8 @@
 language: cpp
 os: windows
+script:
+@echo off
+mkdir build
+cd build
+cmake ../
+msbuild engine.sln /p:Configuration=Release /p:Platform="Win32"
