@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 /*	REQUIRED	*/
-#define GAME_NAME "Dungeon Platformer"
+#define GAME_NAME "GAME"
 #define STARTING_SCENE "Scene_Main_Menu"
 
 #define VIRTUAL_RESOLUTION_WIDTH 1280

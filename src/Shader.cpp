@@ -7,7 +7,7 @@
 
 #include "Shader.h"
 #include "Constants.h"
-#include "desktop/System.h"
+#include "SystemBase.h"
 #include <Log.h>
 
 // helper function - TODO move to global functions
@@ -28,8 +28,10 @@ Shader::Shader(std::string vertexShaderSourceFileName, std::string fragmentShade
 	std::string vertexShaderFilePath = PATH_SHADERS + vertexShaderSourceFileName;
 	std::string fragmentShaderFilePath = PATH_SHADERS + fragmentShaderSourceFileName;
 
-	System::LoadStringDataFromAssets(vertexShaderFilePath, this->m_vertexShaderSource);
-	System::LoadStringDataFromAssets(fragmentShaderFilePath, this->m_fragmentShaderSource);
+	System::SYSTEM_PTR->LoadStringDataFromAssets(vertexShaderFilePath, this->m_vertexShaderSource);
+	System::SYSTEM_PTR->LoadStringDataFromAssets(fragmentShaderFilePath, this->m_fragmentShaderSource);
+	//System::LoadStringDataFromAssets(vertexShaderFilePath, this->m_vertexShaderSource);
+	//System::LoadStringDataFromAssets(fragmentShaderFilePath, this->m_fragmentShaderSource);
 
 	// initialize shaders
 	this->m_VERTEX_SHADER = glCreateShader(GL_VERTEX_SHADER);

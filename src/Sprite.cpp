@@ -6,12 +6,12 @@
 //
 
 #include "Sprite.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-#include "desktop/System.h"
-
+#include "SystemBase.h"
 #include "Log.h"
 #include "Constants.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 /***************************************
  * public methods
@@ -162,7 +162,8 @@ void Sprite::loadTexture2D(std::string textureFileName)
 
 	unsigned char* bufferData;
 	off_t length;
-	System::LoadBinaryDataFromAssets(textureFileName, bufferData, length);
+	//System::LoadBinaryDataFromAssets(textureFileName, bufferData, length);
+	System::SYSTEM_PTR->LoadBinaryDataFromAssets(textureFileName, bufferData, length);
 
 	unsigned char* data = stbi_load_from_memory(bufferData, length, &width, &height, &nOfChannels, 0);
     delete[] bufferData;

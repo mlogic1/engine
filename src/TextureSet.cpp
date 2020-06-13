@@ -2,7 +2,7 @@
 
 #include "Constants.h"
 #include <stb_image.h>
-#include "desktop/System.h"
+#include "SystemBase.h"
 
 
 TextureSet::TextureSet(std::list<std::string> texturesToLoad)
@@ -15,7 +15,8 @@ TextureSet::TextureSet(std::list<std::string> texturesToLoad)
 		unsigned char* buffer;
 		off_t length;
 		int width, height, nOfChannels;
-		System::LoadBinaryDataFromAssets(textureAssetPath, buffer, length);
+		//System::LoadBinaryDataFromAssets(textureAssetPath, buffer, length);
+		System::SYSTEM_PTR->LoadBinaryDataFromAssets(textureAssetPath, buffer, length);
 		Log::Write("Size | " + std::to_string(length) + " bytes");
 
 		unsigned char* data = stbi_load_from_memory(buffer, length, &width, &height, &nOfChannels, 0);
