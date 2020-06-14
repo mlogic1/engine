@@ -30,6 +30,7 @@ SET (ENGINE_ALL_FILES
 
 add_library(engine STATIC ${ENGINE_ALL_FILES})
 target_include_directories(engine INTERFACE ${ENGINE_INCLUDE_DIR})
+target_include_directories(engine INTERFACE ${STB_IMAGE_INCLUDE_DIR})
 target_include_directories(engine INTERFACE ${GLAD_INCLUDE_DIR})
 target_include_directories(engine INTERFACE ${GLM_INCLUDE_DIR})
 target_link_libraries(engine glfw)
