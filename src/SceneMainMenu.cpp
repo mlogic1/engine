@@ -1,12 +1,8 @@
 #include "SceneMainMenu.h"
-
-#include "GLFW/glfw3.h"
-#include <stb_image.h>
-
 #include "Log.h"
-//#include "Desktop/System.h"
+#include <GLFW/glfw3.h>
+#include <stb_image.h>
 #include <list>
-
 
 namespace SceneSystem
 {
@@ -15,25 +11,6 @@ namespace SceneSystem
 		try {
 			mainShader = new Shader("StandardShaderVertex.vs", "StandardShaderFragment.fs");
 			orthoShader = new Shader("OrthoShaderVertex.vs", "StandardShaderFragment.fs");
-
-			// sprites data
-			/*float vertices1[] = 
-			{
-				// position          // texture     // stride = 5 floats
-				-0.05f, 0.8f,  1.0f,   1.0f, 1.0f,    // top right corner
-				-0.05f, -0.6f, 1.0f,   1.0f, 0.0f,    // bottom right corner
-				-0.95f, -0.6f, 1.0f,   0.0f, 0.0f,   // bottom left corner
-				-0.95f, 0.8f,  1.0f,   0.0f, 1.0f    // top left corner
-			};
-
-			float vertices2[] =
-			{
-				// position          // texture     // stride = 5 floats
-				1.0f, 1.0f,  1.0f,   1.0f, 1.0f,    // top right corner
-				1.0f, -1.0f, 1.0f,   1.0f, 0.0f,    // bottom right corner
-				-1.0f, -1.0f, 1.0f,   0.0f, 0.0f,   // bottom left corner
-				-1.0f, 1.0f,  1.0f,   0.0f, 1.0f    // top left corner
-			};*/
 
 			Rect bgRect = { 0, 0, 1280, 720 };
 			Rect spriteRect = { 650, 630, 632, 84 };

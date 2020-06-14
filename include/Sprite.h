@@ -37,6 +37,17 @@ public:
 	std::string GetTexture();
 	unsigned int GetTextureID();
 
+	/***************************************
+	 * properties
+	***************************************/
+	virtual bool GetVisible();
+	Vector2f GetPosition();
+	Vector2f GetSize();
+
+	virtual void SetVisible(bool visibleState);
+	void SetPosition(Vector2f position);
+	void SetSize(Vector2f size);
+
 private:
 
 	/***************************************
@@ -59,7 +70,11 @@ private:
 
 	// shader
 	Shader *m_spriteShader;
-	Rect m_spriteRect{ 100, 100, 150,150 };
+
+	// properties
+	bool m_isVisible = true;
+	Vector2f m_position;
+	Vector2f m_size;
 
 	/*	default rect vertices count	*/
 	unsigned int VERTEX_COUNT = 20;

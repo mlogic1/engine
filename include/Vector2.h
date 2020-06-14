@@ -23,8 +23,8 @@ public:
 
 	Vector2(const T &vector)
 	{
-		this->x = (T)vector.x;
-		this->y = (T)vector.y;
+		this->x = static_cast<T>(vector.x);
+		this->y = static_cast<T>(vector.y);
 	}
 
 	~Vector2()
@@ -32,5 +32,8 @@ public:
 
 	}
 };
+
+using Vector2i = Vector2<int>;
+using Vector2f = Vector2<float>;
 
 #endif // VECTOR2_H

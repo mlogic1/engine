@@ -18,7 +18,8 @@
 ***************************************/
 
 Sprite::Sprite(Shader *spriteShader, Rect spriteRect, std::string textureFileName) :
-	m_spriteRect(spriteRect),
+	m_position(spriteRect.x, spriteRect.y),
+	m_size(spriteRect.w, spriteRect.h),
 	m_textureFileName(textureFileName)
 {
 	this->m_spriteShader = spriteShader;
@@ -69,50 +70,12 @@ Sprite::~Sprite()
 
 void Sprite::update(float deltaTime)
 {
+	float vertices[20];
+	GetNormalizedCoordinates(vertices);
 
-	if (this->m_textureFileName == "doge.png")
-	{
-		/*
-		(dot - res/2) / (res/2)
-
-		(740 - 960) / 960
-
-		*/
-
-		float normX, normY;
-		normX = (m_spriteRect.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
-		normY = (m_spriteRect.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
-
-		float normW, normH;
-		normW = (m_spriteRect.x + m_spriteRect.w - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
-		normH = (m_spriteRect.y + m_spriteRect.h - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
-
-		float tlX = normX, tlY = normY * -1.0f;
-		float trX = normW, trY = normY * -1.0f;
-
-		float blX = normX, blY = normH * -1.0f;
-		float brX = normW, brY = normH * -1.0f;
-
-		float vertices[] =
-		{
-			// position          // texture     // stride = 5 floats
-			trX, trY,  1.0f,   1.0f, 1.0f,    // top right corner
-			brX, brY, 1.0f,   1.0f, 0.0f,    // bottom right corner
-			blX, blY, 1.0f,   0.0f, 0.0f,   // bottom left corner
-			tlX, tlY,  1.0f,   0.0f, 1.0f    // top left corner
-		};
-
-		glBindVertexArray(this->VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, 20 * sizeof(float), &vertices);
-
-		/*Log::Write("normalized x: " + std::to_string(normX));
-		Log::Write("normalized y: " + std::to_string(normY));
-
-		Log::Write("normalized w: " + std::to_string(normW));
-		Log::Write("normalized h: " + std::to_string(normH));*/
-	}
-
+	glBindVertexArray(this->VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, 20 * sizeof(float), &vertices);
 }
 
 void Sprite::render()
@@ -143,6 +106,36 @@ std::string Sprite::GetTexture()
 unsigned int Sprite::GetTextureID()
 {
 	return this->m_texture;
+}
+
+bool Sprite::GetVisible()
+{
+	return m_isVisible;
+}
+
+Vector2f Sprite::GetPosition()
+{
+	return m_position;
+}
+
+Vector2f Sprite::GetSize()
+{
+	return m_size;
+}
+
+void Sprite::SetVisible(bool visibleState)
+{
+	m_isVisible = visibleState;
+}
+
+void Sprite::SetPosition(Vector2f position)
+{
+	m_position = position;
+}
+
+void Sprite::SetSize(Vector2f size)
+{
+	m_size = size;
 }
 
 /***************************************
@@ -207,12 +200,12 @@ void Sprite::loadTexture2D(std::string textureFileName)
 void Sprite::GetNormalizedCoordinates(float (&arr)[20])
 {
 	float normX, normY;
-	normX = (m_spriteRect.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
-	normY = (m_spriteRect.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
+	normX = (m_position.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
+	normY = (m_position.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
 
 	float normW, normH;
-	normW = (m_spriteRect.x + m_spriteRect.w - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
-	normH = (m_spriteRect.y + m_spriteRect.h - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
+	normW = (m_position.x + m_size.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
+	normH = (m_position.y + m_size.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
 
 	float tlX = normX, tlY = normY * -1.0f;
 	float trX = normW, trY = normY * -1.0f;
