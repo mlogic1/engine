@@ -17,4 +17,13 @@ namespace SceneSystem
 	{
 	}
 
+	void Scene::InstantiateSprite(Sprite* sprite)
+	{
+		m_sprites.push_back(sprite);
+	}
+
+	void Scene::InstantiateSprite(Shader* shader, Rect rect, std::string texture)
+	{
+		m_sprites.push_back(new Sprite(shader, rect, texture));
+	}
 }

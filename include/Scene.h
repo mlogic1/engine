@@ -8,12 +8,13 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <iostream>
-#include <string>
-#include <vector>
-
 #include "GameCamera.h"
 #include "Key.h"
+#include "Shader.h"
+#include "Sprite.h"
+#include "Rect.h"
+#include <string>
+#include <vector>
 
 namespace SceneSystem
 {
@@ -26,12 +27,13 @@ namespace SceneSystem
 		virtual void UpdateScene() = 0;
 		virtual void DrawScene() = 0;
 		virtual void OnKey(System::Key Key);
+		void InstantiateSprite(Sprite* sprite);
+		void InstantiateSprite(Shader* shader, Rect rect, std::string texture);
 
-		protected:
-			std::string m_sceneName;
-			GameCamera *m_gameCamera;
-			std::vector<GameObject*> m_gameObjects;
-
+	protected:
+		std::string m_sceneName;
+		GameCamera *m_gameCamera;
+		std::vector<Sprite*> m_sprites;
 	};
 }
 

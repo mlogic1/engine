@@ -1,5 +1,5 @@
-#ifndef DUNGEON_KEY_H
-#define DUNGEON_KEY_H
+#ifndef ENGINE_KEY_H
+#define ENGINE_KEY_H
 
 namespace System
 {

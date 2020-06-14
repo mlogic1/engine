@@ -48,8 +48,24 @@ public:
 	void SetPosition(Vector2f position);
 	void SetSize(Vector2f size);
 
-private:
+protected:
+	/*  texture loading method  */
+	void loadTexture2D(std::string textureFileName);
+	void GetNormalizedCoordinates(float(&arr)[20]);
 
+protected:
+	// properties
+	bool m_isVisible = true;
+	Vector2f m_position;
+	Vector2f m_size;
+	// TODO add pivots
+	// TODO z-order
+
+	// texture
+	std::string m_textureFileName;
+	unsigned int m_texture; // gl texture ID
+
+private:
 	/***************************************
 	 * GL
 	***************************************/
@@ -64,18 +80,10 @@ private:
 	// draw mode
 	const int GL_DRAW_MODE = GL_TRIANGLES;
 
-	// texture
-	std::string m_textureFileName;
-	unsigned int m_texture; // gl texture ID
-
 	// shader
 	Shader *m_spriteShader;
 
-	// properties
-	bool m_isVisible = true;
-	Vector2f m_position;
-	Vector2f m_size;
-
+private:
 	/*	default rect vertices count	*/
 	unsigned int VERTEX_COUNT = 20;
 
@@ -95,10 +103,8 @@ private:
 	const float texTLX = 0.0f;
 	const float texTLY = 1.0f;
 
-	/*  texture loading method  */
-	void loadTexture2D(std::string textureFileName);
-
-	void GetNormalizedCoordinates(float (&arr)[20]);
+private:
+	const std::string m_spriteID = "DefaultSprite";	// TODO every sprite needs a unique ID
 };
 
 #endif /* Sprite_h */
