@@ -60,6 +60,7 @@ protected:
 	Vector2f m_size;
 	// TODO add pivots
 	// TODO z-order
+	// TODO angle
 
 	// texture
 	std::string m_textureFileName;

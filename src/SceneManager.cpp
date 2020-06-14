@@ -1,8 +1,6 @@
 #include "SceneManager.h"
-#include <glad/glad.h>
-
 #include "Constants.h"
-#include "SceneMainMenu.h"
+#include <glad/glad.h>
 
 namespace SceneSystem
 {
@@ -10,12 +8,12 @@ namespace SceneSystem
 	{
 		if (this->m_currentScene != nullptr)
 		{
-			this->m_currentScene->UpdateScene();
-			this->m_currentScene->DrawScene();
+			this->m_currentScene->Update();
+			this->m_currentScene->Render();
 		}
 	}
 
-	void SceneManager::SwitchScene(Scene * newScene)
+	void SceneManager::SwitchScene(Scene* newScene)
 	{
 		this->m_currentScene = newScene;
 	}
@@ -25,11 +23,9 @@ namespace SceneSystem
 		this->m_currentScene->OnKey(Key);
 	}
 
-
 	SceneManager::SceneManager()
 	{
 	}
-
 
 	SceneManager::~SceneManager()
 	{

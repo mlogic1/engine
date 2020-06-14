@@ -13,6 +13,29 @@ namespace SceneSystem
 	{
 	}
 
+	void Scene::Update()
+	{
+		this->m_gameCamera->update(0.016f);
+		for (Sprite* sprite : m_sprites)
+		{
+			sprite->update(0.0016);
+		}
+		UpdateScene();
+	}
+
+	void Scene::Render()
+	{
+		glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		glDisable(GL_DEPTH_TEST);
+		for (Sprite* sprite : m_sprites)
+		{
+			sprite->render();
+		}
+		RenderScene();
+	}
+
 	void Scene::OnKey(System::Key Key)
 	{
 	}
@@ -25,5 +48,10 @@ namespace SceneSystem
 	void Scene::InstantiateSprite(Shader* shader, Rect rect, std::string texture)
 	{
 		m_sprites.push_back(new Sprite(shader, rect, texture));
+	}
+
+	void Scene::RemoveSprite(const std::string & spriteID)
+	{
+		// TODO implement
 	}
 }

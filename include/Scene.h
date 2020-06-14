@@ -24,18 +24,23 @@ namespace SceneSystem
 		Scene(const char* SceneName);
 		virtual ~Scene();
 
-		virtual void UpdateScene() = 0;
-		virtual void DrawScene() = 0;
+		void Update();
+		void Render();
 		virtual void OnKey(System::Key Key);
 		void InstantiateSprite(Sprite* sprite);
 		void InstantiateSprite(Shader* shader, Rect rect, std::string texture);
+		void RemoveSprite(const std::string& spriteID);
+
+	protected:
+		virtual void UpdateScene() = 0;
+		virtual void RenderScene() = 0;
 
 	protected:
 		std::string m_sceneName;
-		GameCamera *m_gameCamera;
+		GameCamera* m_gameCamera;
 		std::vector<Sprite*> m_sprites;
 	};
 }
 
-#endif // !SCENE_H
+#endif // SCENE_H
 
