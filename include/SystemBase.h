@@ -25,6 +25,7 @@ namespace System
 		virtual bool InitSystem() = 0;
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
+		const GLRenderMode& GetRenderMode();
 
 		// TODO getsystemtype
 

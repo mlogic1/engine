@@ -147,7 +147,7 @@ namespace System
 
 	void OnWindowResized(GLFWwindow * window, int width, int height)
 	{
-		/*switch (_RenderMode)
+		switch (SYSTEM_PTR->GetRenderMode())
 		{
 		case GLRenderMode::LetterBox:
 		{
@@ -187,7 +187,7 @@ namespace System
 		default:
 			glViewport(0, 0, width, height);
 			break;
-		}*/
+		}
 	}
 
 	bool InitGameEngine()
