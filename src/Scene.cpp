@@ -50,7 +50,7 @@ namespace SceneSystem
 		m_sprites.push_back(new Sprite(shader, rect, texture));
 	}
 
-	void Scene::RemoveSprite(const std::string & spriteID)
+	void Scene::RemoveSprite(const std::string& spriteID)
 	{
 		// TODO implement
 	}

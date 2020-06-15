@@ -155,7 +155,6 @@ void Sprite::loadTexture2D(std::string textureFileName)
 
 	unsigned char* bufferData;
 	off_t length;
-	//System::LoadBinaryDataFromAssets(textureFileName, bufferData, length);
 	System::SYSTEM_PTR->LoadBinaryDataFromAssets(textureFileName, bufferData, length);
 
 	unsigned char* data = stbi_load_from_memory(bufferData, length, &width, &height, &nOfChannels, 0);

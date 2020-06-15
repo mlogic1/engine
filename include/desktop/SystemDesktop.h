@@ -18,8 +18,8 @@ namespace System
 		bool IsRunning() override;
 		// TODO getsystemtype
 
-		bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) override;
-		bool LoadStringDataFromAssets(const std::string fileName, std::string& data) override;
+		bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const override;
+		bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const override;
 
 	private:
 		GLFWwindow* InitWindow();

@@ -21,11 +21,12 @@ class Shader {
 
 public:
 
-	Shader(std::string vertexShaderSourceFileName, std::string fragmentShaderSourceFileName);
+	Shader(std::string shaderName, std::string vertexShaderSource, std::string fragmentShaderSource);
 	~Shader();
 
 	void useShader() const;
 	unsigned int getShaderID() const;
+	std::string GetName() const;
 
 	void set1i(const char* name, const int value) const;
 	void set1f(const char* name, const float value) const;
@@ -39,6 +40,9 @@ private:
 
 	// gl shader ID
 	unsigned int SHADER_ID;
+
+	// shader name
+	const std::string m_shaderName;
 
 	// shader source code
 	std::string m_vertexShaderSource;

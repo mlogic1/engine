@@ -22,17 +22,11 @@ inline const GLint Shader::getCurrentProgramID()
  * public methods
 ***************************************/
 
-Shader::Shader(std::string vertexShaderSourceFileName, std::string fragmentShaderSourceFileName)
+Shader::Shader(std::string shaderName, std::string vertexShaderSource, std::string fragmentShaderSource) :
+	m_shaderName(shaderName),
+	m_vertexShaderSource(vertexShaderSource),
+	m_fragmentShaderSource(fragmentShaderSource)
 {
-	// load shaders
-	std::string vertexShaderFilePath = PATH_SHADERS + vertexShaderSourceFileName;
-	std::string fragmentShaderFilePath = PATH_SHADERS + fragmentShaderSourceFileName;
-
-	System::SYSTEM_PTR->LoadStringDataFromAssets(vertexShaderFilePath, this->m_vertexShaderSource);
-	System::SYSTEM_PTR->LoadStringDataFromAssets(fragmentShaderFilePath, this->m_fragmentShaderSource);
-	//System::LoadStringDataFromAssets(vertexShaderFilePath, this->m_vertexShaderSource);
-	//System::LoadStringDataFromAssets(fragmentShaderFilePath, this->m_fragmentShaderSource);
-
 	// initialize shaders
 	this->m_VERTEX_SHADER = glCreateShader(GL_VERTEX_SHADER);
 	this->m_FRAGMENT_SHADER = glCreateShader(GL_FRAGMENT_SHADER);
@@ -67,6 +61,11 @@ void Shader::useShader() const
 unsigned int Shader::getShaderID() const
 {
 	return this->SHADER_ID;
+}
+
+std::string Shader::GetName() const
+{
+	return m_shaderName;
 }
 
 void Shader::set1i(const char* name, const int value) const
@@ -146,7 +145,6 @@ void Shader::compileShaders()
 		error += infoLog;
 		throw error;
 	}
-
 }
 
 void Shader::linkShaders()

@@ -53,7 +53,7 @@ namespace System
 		return !glfwWindowShouldClose(m_gameWindow);
 	}
 
-	bool SystemDesktop::LoadBinaryDataFromAssets(const std::string fileName, unsigned char *& data, off_t & length)
+	bool SystemDesktop::LoadBinaryDataFromAssets(const std::string fileName, unsigned char *& data, off_t & length) const
 	{
 		std::ifstream fileInStream(fileName, std::ios::binary);
 
@@ -82,7 +82,7 @@ namespace System
 		return true;
 	}
 
-	bool SystemDesktop::LoadStringDataFromAssets(const std::string fileName, std::string & data)
+	bool SystemDesktop::LoadStringDataFromAssets(const std::string fileName, std::string & data) const
 	{
 		std::string result = "";
 
@@ -192,7 +192,10 @@ namespace System
 
 	bool InitGameEngine()
 	{
+		// TODO error checking
 		SYSTEM_PTR = new SystemDesktop();
-		return SYSTEM_PTR->InitSystem();
+		SYSTEM_PTR->InitSystem();
+		SYSTEM_PTR->InitShaderManager();
+		return true;
 	}
 }

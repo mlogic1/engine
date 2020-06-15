@@ -2,6 +2,7 @@
 #define SYSTEMBASE_H
 
 #include "SceneManager.h"
+#include "ShaderManager.h"
 #include <string>
 
 namespace System
@@ -23,20 +24,27 @@ namespace System
 	{
 	public:
 		virtual bool InitSystem() = 0;
+		void InitShaderManager();
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
 
 		// TODO getsystemtype
 
-		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) = 0;
-		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) = 0;
+		const Engine::ShaderManager* GetShaderManager() const	// move this to cpp
+		{
+			return m_shaderManager;
+		}
+
+		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const = 0;
+		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const  = 0;
 
 		SceneSystem::SceneManager m_sceneManager;	// TODO move to proctected part
 
 	protected:
 		// rendering mode // TODO maybe move this to a global configuration source file
 		GLRenderMode _RenderMode = GLRenderMode::LetterBox;
+		Engine::ShaderManager* m_shaderManager = nullptr;
 	};
 
 	extern SystemBase* SYSTEM_PTR;
