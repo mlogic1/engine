@@ -196,6 +196,8 @@ namespace System
 		SYSTEM_PTR = new SystemDesktop();
 		SYSTEM_PTR->InitSystem();
 		SYSTEM_PTR->InitShaderManager();
+		SYSTEM_PTR->InitTextureManager();
+
 		return true;
 	}
 }

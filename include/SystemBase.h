@@ -3,6 +3,7 @@
 
 #include "SceneManager.h"
 #include "ShaderManager.h"
+#include "TextureManager.h"
 #include <string>
 
 namespace System
@@ -25,6 +26,7 @@ namespace System
 	public:
 		virtual bool InitSystem() = 0;
 		void InitShaderManager();
+		void InitTextureManager();
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
@@ -36,6 +38,11 @@ namespace System
 			return m_shaderManager;
 		}
 
+		const Engine::TextureManager* GetTextureManager() const	// move this to cpp
+		{
+			return m_textureManager;
+		}
+
 		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const = 0;
 		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const  = 0;
 
@@ -45,6 +52,7 @@ namespace System
 		// rendering mode // TODO maybe move this to a global configuration source file
 		GLRenderMode _RenderMode = GLRenderMode::LetterBox;
 		Engine::ShaderManager* m_shaderManager = nullptr;
+		Engine::TextureManager* m_textureManager = nullptr;
 	};
 
 	extern SystemBase* SYSTEM_PTR;
