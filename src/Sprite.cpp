@@ -17,15 +17,14 @@
  * public methods
 ***************************************/
 
-Sprite::Sprite(Shader *spriteShader, Rect spriteRect, std::string textureFileName) :
+Sprite::Sprite(Shader *spriteShader, Rect spriteRect, GLuint textureID) :
 	m_position(spriteRect.x, spriteRect.y),
 	m_size(spriteRect.w, spriteRect.h),
-	m_textureFileName(textureFileName)
+	m_texture(textureID)
 {
 	this->m_spriteShader = spriteShader;
 	Log::Write("Instantiating sprite");
 
-	loadTexture2D(textureFileName);
 	m_spriteShader->useShader();
 	glUniform1i(glGetUniformLocation(this->m_spriteShader->getShaderID(), "sprite_texture"), 0);
 
@@ -88,24 +87,14 @@ void Sprite::render()
 }
 
 
-void Sprite::SetTexture(std::string textureFileName)
+void Sprite::SetTexture(GLuint textureID)
 {
-	loadTexture2D(textureFileName);
+	m_texture = textureID;
 }
 
-void Sprite::SetTexture(unsigned int glTexture)
+GLuint Sprite::GetTexture()
 {
-	this->m_texture = glTexture;
-}
-
-std::string Sprite::GetTexture()
-{
-	return m_textureFileName;
-}
-
-unsigned int Sprite::GetTextureID()
-{
-	return this->m_texture;
+	return m_texture;
 }
 
 bool Sprite::GetVisible()
@@ -141,60 +130,6 @@ void Sprite::SetSize(Vector2f size)
 /***************************************
  * private methods
 ***************************************/
-
-void Sprite::loadTexture2D(std::string textureFileName)
-{
-	glGenTextures(1, &this->m_texture);
-	glBindTexture(GL_TEXTURE_2D, this->m_texture);
-
-	textureFileName = PATH_TEXTURES + textureFileName;
-
-	int width, height, nOfChannels;
-
-	stbi_set_flip_vertically_on_load(true);
-
-	unsigned char* bufferData;
-	off_t length;
-	System::SYSTEM_PTR->LoadBinaryDataFromAssets(textureFileName, bufferData, length);
-
-	unsigned char* data = stbi_load_from_memory(bufferData, length, &width, &height, &nOfChannels, 0);
-    delete[] bufferData;
-
-	if (!data)
-	{
-		std::string error = "Unable to load image: ";
-		error += textureFileName;
-		throw error;
-	}
-	else {
-		std::cout << "Loaded image: " << textureFileName << std::endl;
-	}
-
-	// texture filtering options
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// enables transparency on png texture
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	// generate texture
-	if (nOfChannels == 4)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	}
-	else
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	}
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// clean up
-	stbi_image_free(data);
-}
 
 void Sprite::GetNormalizedCoordinates(float (&arr)[20])
 {

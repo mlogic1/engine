@@ -33,15 +33,8 @@ namespace System
 
 		// TODO getsystemtype
 
-		const Engine::ShaderManager* GetShaderManager() const	// move this to cpp
-		{
-			return m_shaderManager;
-		}
-
-		const Engine::TextureManager* GetTextureManager() const	// move this to cpp
-		{
-			return m_textureManager;
-		}
+		const Engine::ShaderManager* GetShaderManager() const;
+		const Engine::TextureManager* GetTextureManager() const;
 
 		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const = 0;
 		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const  = 0;

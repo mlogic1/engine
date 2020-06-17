@@ -28,7 +28,7 @@ namespace SceneSystem
 		void Render();
 		virtual void OnKey(System::Key Key);
 		void InstantiateSprite(Sprite* sprite);
-		void InstantiateSprite(Shader* shader, Rect rect, std::string texture);
+		void InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID);
 		void RemoveSprite(const std::string& spriteID);
 
 	protected:

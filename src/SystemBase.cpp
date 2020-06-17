@@ -14,8 +14,18 @@ namespace System
 		m_textureManager = new Engine::TextureManager(*this);
 	}
 
-	const GLRenderMode & SystemBase::GetRenderMode()
+	const GLRenderMode& SystemBase::GetRenderMode()
 	{
 		return _RenderMode;
+	}
+
+	const Engine::ShaderManager* SystemBase::GetShaderManager() const
+	{
+		return m_shaderManager;
+	}
+
+	const Engine::TextureManager* SystemBase::GetTextureManager() const
+	{
+		return m_textureManager;
 	}
 }

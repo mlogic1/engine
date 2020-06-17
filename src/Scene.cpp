@@ -45,9 +45,9 @@ namespace SceneSystem
 		m_sprites.push_back(sprite);
 	}
 
-	void Scene::InstantiateSprite(Shader* shader, Rect rect, std::string texture)
+	void Scene::InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID)
 	{
-		m_sprites.push_back(new Sprite(shader, rect, texture));
+		m_sprites.push_back(new Sprite(shader, rect, textureID));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)

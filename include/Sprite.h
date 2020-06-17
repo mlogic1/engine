@@ -20,7 +20,7 @@ class Sprite : public GameObject {
 
 public:
 
-	Sprite(Shader *spriteShader, Rect spriteRect, std::string textureFileName);
+	Sprite(Shader *spriteShader, Rect spriteRect, GLuint textureID);
 	~Sprite();
 
 	/***************************************
@@ -32,10 +32,8 @@ public:
 	/***************************************
 	 * textures
 	***************************************/
-	void SetTexture(std::string textureFileName);
-	void SetTexture(unsigned int glTexture);
-	std::string GetTexture();
-	unsigned int GetTextureID();
+	void SetTexture(GLuint textureFileName);
+	GLuint GetTexture();
 
 	/***************************************
 	 * properties
@@ -49,8 +47,7 @@ public:
 	void SetSize(Vector2f size);
 
 protected:
-	/*  texture loading method  */
-	void loadTexture2D(std::string textureFileName);
+	/*  normalize  */
 	void GetNormalizedCoordinates(float(&arr)[20]);
 
 protected:
@@ -63,8 +60,7 @@ protected:
 	// TODO angle
 
 	// texture
-	std::string m_textureFileName;
-	unsigned int m_texture; // gl texture ID
+	GLuint m_texture; // gl texture ID
 
 private:
 	/***************************************

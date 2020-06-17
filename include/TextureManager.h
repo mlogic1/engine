@@ -23,7 +23,8 @@ namespace Engine
     {
         public:
             TextureManager(const System::SystemBase& system);
-            GLuint GetTexture(std::string name) const;
+            GLuint GetTexture(const std::string& name) const;
+		
 
         private:
 			std::map<std::string, GLuint> m_textures;
