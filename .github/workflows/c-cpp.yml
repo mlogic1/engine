@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
     - name: build dir and cmake
       run: mkdir build && cd build && cmake ..
     - name: run build
