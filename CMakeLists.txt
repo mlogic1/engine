@@ -3,7 +3,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(lib/glfw)
 
-project(engine CXX)
+project(engine CXX C)
 
 SET (ENGINE_INCLUDE_DIR ./include)
 SET (ENGINE_SOURCE_DIR ./src)
