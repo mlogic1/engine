@@ -15,6 +15,8 @@ jobs:
     - uses: actions/checkout@v1
       with:
         submodules: true
+    - name: install dependencies
+      run: sudo apt-get install xorg-dev
     - name: build dir and cmake
       run: mkdir build && cd build && cmake ..
     - name: run build
