@@ -42,6 +42,7 @@ namespace System
 
 	void SystemDesktop::Update()
 	{
+		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
 		m_sceneManager.Update();
 
 		glfwSwapBuffers(m_gameWindow);

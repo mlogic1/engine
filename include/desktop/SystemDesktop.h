@@ -2,6 +2,7 @@
 #define SYSTEM_DESKTOP_H
 
 #include "SystemBase.h"
+#include "Vector2.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -28,6 +29,8 @@ namespace System
 
 	private:
 		GLFWwindow* m_gameWindow = nullptr;
+
+		Vector2<double> m_mousePosition;
 	};
 }
 

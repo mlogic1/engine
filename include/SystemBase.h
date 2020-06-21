@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
+#include "Vector2.h"
 #include <string>
 
 namespace System
@@ -47,6 +48,10 @@ namespace System
 		GLRenderMode _RenderMode = GLRenderMode::LetterBox;
 		Engine::ShaderManager* m_shaderManager = nullptr;
 		Engine::TextureManager* m_textureManager = nullptr;
+
+	private:
+		// cursor
+		Vector2f m_cursorPosition{-1.0f, -1.0f};
 	};
 
 	extern SystemBase* SYSTEM_PTR;
