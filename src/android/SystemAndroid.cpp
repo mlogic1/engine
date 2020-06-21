@@ -1,8 +1,7 @@
-#include "System.h"
+#include "android/SystemAndroid.h"
 
 #include "glad/glad.h"
 #include "Log.h"
-//#include <iostream>
 #include <EGL/egl.h>
 #include <glad/glad.h>
 #include <SceneManager.h>
@@ -11,12 +10,8 @@ namespace System
 {
     AAssetManager* NDK_ASSET_MANAGER = nullptr;
 
-    namespace
-    {
 
-    }
-
-	bool InitSystemAndroid()
+	bool SystemAndroid::InitSystem()
 	{
 		bool initSuccess = true;
 		
@@ -29,24 +24,24 @@ namespace System
 		return initSuccess;
 	}
 
-	bool SetSystemAssetManager(AAssetManager* assetManager)
+	/*bool SystemAndroid::SetSystemAssetManager(AAssetManager* assetManager)
 	{
         NDK_ASSET_MANAGER = assetManager;
 		return  true;
-	}
+	}*/
 
-	bool IsRunning()
+	bool SystemAndroid::IsRunning()
 	{
         // TODO fix android is running
         return true;
 	}
 
-	void update()
+	void SystemAndroid::Update()
 	{
-		SceneSystem::SceneManager::GetSceneManager()->Update();
+		m_sceneManager.Update();
 	}
 
-	bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length)
+	bool SystemAndroid::LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const
 	{
         AAssetManager* manager = System::NDK_ASSET_MANAGER;
 		// TODO missing file check
@@ -59,7 +54,7 @@ namespace System
     	return true;
 	}
 
-	bool LoadStringDataFromAssets(const std::string fileName, std::string& data)
+	bool SystemAndroid::LoadStringDataFromAssets(const std::string fileName, std::string& data) const
 	{
 		std::string result = "";
 		// TODO missing file check
@@ -88,4 +83,18 @@ namespace System
 		return true;
 	}
 
+	bool InitGameEngine()
+	{
+		SYSTEM_PTR = new SystemAndroid();
+		SYSTEM_PTR->InitSystem();
+		SYSTEM_PTR->InitShaderManager();
+		SYSTEM_PTR->InitTextureManager();
+
+		return true;
+	}
+
+	void SetSystemAssetManager(AAssetManager *assetManager)
+	{
+		NDK_ASSET_MANAGER = assetManager;
+	}
 }
