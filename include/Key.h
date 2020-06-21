@@ -3,12 +3,15 @@
 
 namespace System
 {
-	enum Key
+	enum class Key
 	{
 		W = 0,
 		A,
 		S,
 		D,
+		ESC,
+		SPACE,
+		Q,
 		Num0,
 		Num1,
 		Num2,
@@ -28,7 +31,9 @@ namespace System
 		NumPad6,
 		NumPad7,
 		NumPad8,
-		NumPad9
+		NumPad9,
+		ANDROID_BACK,
+		ANDROID_HOME
 	};
 }
 

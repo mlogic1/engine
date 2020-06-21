@@ -9,6 +9,7 @@
 #define SCENE_H
 
 #include "GameCamera.h"
+#include "IInputReceiver.h"
 #include "Key.h"
 #include "Shader.h"
 #include "Sprite.h"
@@ -18,7 +19,7 @@
 
 namespace SceneSystem
 {
-	class Scene
+	class Scene : public System::IInputReceiver
 	{
 	public:
 		Scene(const char* SceneName);
@@ -26,7 +27,7 @@ namespace SceneSystem
 
 		void Update();
 		void Render();
-		virtual void OnKey(System::Key Key);
+		virtual void ReceiveKeyInput(System::Key Key) override;
 		void InstantiateSprite(Sprite* sprite);
 		void InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID);
 		void RemoveSprite(const std::string& spriteID);

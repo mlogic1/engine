@@ -36,8 +36,9 @@ namespace SceneSystem
 		RenderScene();
 	}
 
-	void Scene::OnKey(System::Key Key)
+	void Scene::ReceiveKeyInput(System::Key Key)
 	{
+
 	}
 
 	void Scene::InstantiateSprite(Sprite* sprite)

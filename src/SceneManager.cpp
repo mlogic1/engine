@@ -18,9 +18,9 @@ namespace SceneSystem
 		this->m_currentScene = newScene;
 	}
 
-	void SceneManager::OnKey(System::Key Key)
+	void SceneManager::ReceiveKeyInput(System::Key Key)
 	{
-		this->m_currentScene->OnKey(Key);
+		this->m_currentScene->ReceiveKeyInput(Key);
 	}
 
 	SceneManager::SceneManager()

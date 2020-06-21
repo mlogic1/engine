@@ -1,6 +1,7 @@
 #ifndef SYSTEMBASE_H
 #define SYSTEMBASE_H
 
+#include "IInputReceiver.h"
 #include "SceneManager.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
@@ -21,7 +22,7 @@ namespace System
 		Stretch
 	};
 
-	class SystemBase
+	class SystemBase : public IInputReceiver
 	{
 	public:
 		virtual bool InitSystem() = 0;
@@ -30,7 +31,7 @@ namespace System
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
-
+		void ReceiveKeyInput(Key key) override;
 		// TODO getsystemtype
 
 		const Engine::ShaderManager* GetShaderManager() const;

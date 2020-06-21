@@ -19,6 +19,11 @@ namespace System
 		return _RenderMode;
 	}
 
+	void SystemBase::ReceiveKeyInput(Key key)
+	{
+		m_sceneManager.ReceiveKeyInput(key);
+	}
+
 	const Engine::ShaderManager* SystemBase::GetShaderManager() const
 	{
 		return m_shaderManager;

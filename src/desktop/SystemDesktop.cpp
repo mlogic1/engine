@@ -128,7 +128,7 @@ namespace System
 
 		glfwMakeContextCurrent(window);
 		glfwSetFramebufferSizeCallback(window, OnWindowResized);
-		//glfwSetKeyCallback(window, onKey);
+		glfwSetKeyCallback(window, OnKey);
 		return window;
 	}
 
@@ -187,6 +187,29 @@ namespace System
 		default:
 			glViewport(0, 0, width, height);
 			break;
+		}
+	}
+
+	void OnKey(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		// TODO translate keys in a better way
+		if (action == GLFW_PRESS)
+		{
+			Log::Write("Key Pressed: " + std::to_string(key));
+			
+			if (key == GLFW_KEY_ESCAPE)
+				SYSTEM_PTR->ReceiveKeyInput(Key::ESC);
+
+			if (key == GLFW_KEY_SPACE)
+				SYSTEM_PTR->ReceiveKeyInput(Key::SPACE);
+
+			if (key == GLFW_KEY_Q)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Q);
+		}
+
+		if (action == GLFW_RELEASE)
+		{
+			Log::Write("Key Released: " + std::to_string(key));
 		}
 	}
 

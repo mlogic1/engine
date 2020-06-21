@@ -9,6 +9,7 @@
 namespace System
 {
 	void OnWindowResized(GLFWwindow* window, int width, int height);
+	void OnKey(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 	class SystemDesktop : public SystemBase
 	{

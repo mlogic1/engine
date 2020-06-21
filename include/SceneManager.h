@@ -9,10 +9,11 @@
 #define SCENE_MANAGER_H
 
 #include "Scene.h"
+#include "IInputReceiver.h"
 
 namespace SceneSystem
 {
-	class SceneManager
+	class SceneManager : public System::IInputReceiver
 	{
 	public:
 		SceneManager();
@@ -21,7 +22,7 @@ namespace SceneSystem
 
 		void Update();
 		void SwitchScene(Scene* newScene);
-		void OnKey(System::Key Key);
+		void ReceiveKeyInput(System::Key Key) override;
 
 	private:
 		Scene* m_currentScene = nullptr;
