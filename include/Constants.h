@@ -15,7 +15,7 @@
         #define PATH_ASSETS ""
         #define PATH_SHADERS "shaders/"
         #define PATH_TEXTURES "textures/"
-    #elif
+    #else
         #define PATH_ASSETS "assets/"
         #define PATH_SHADERS PATH_ASSETS "shaders/"
         #define PATH_TEXTURES PATH_ASSETS "textures/"
