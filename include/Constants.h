@@ -15,10 +15,12 @@
         #define PATH_ASSETS ""
         #define PATH_SHADERS "shaders/"
         #define PATH_TEXTURES "textures/"
+        #define PATH_FONTS "fonts/"
     #else
         #define PATH_ASSETS "assets/"
         #define PATH_SHADERS PATH_ASSETS "shaders/"
         #define PATH_TEXTURES PATH_ASSETS "textures/"
+        #define PATH_FONTS PATH_ASSETS "fonts/"
     #endif
 #elif defined(__ANDROID__)
     #define PATH_SHADERS "shaders/"

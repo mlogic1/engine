@@ -45,6 +45,8 @@ namespace System
 		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
 		m_sceneManager.Update();
 
+		m_fontManager->RenderTest("fonttest");
+
 		glfwSwapBuffers(m_gameWindow);
 		glfwPollEvents();
 	}
@@ -197,7 +199,7 @@ namespace System
 		if (action == GLFW_PRESS)
 		{
 			Log::Write("Key Pressed: " + std::to_string(key));
-			
+
 			if (key == GLFW_KEY_ESCAPE)
 				SYSTEM_PTR->ReceiveKeyInput(Key::ESC);
 
@@ -221,6 +223,7 @@ namespace System
 		SYSTEM_PTR->InitSystem();
 		SYSTEM_PTR->InitShaderManager();
 		SYSTEM_PTR->InitTextureManager();
+		SYSTEM_PTR->InitFontManager();
 
 		return true;
 	}

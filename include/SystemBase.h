@@ -3,8 +3,9 @@
 
 #include "IInputReceiver.h"
 #include "SceneManager.h"
-#include "ShaderManager.h"
+#include "FontManager.h"
 #include "TextureManager.h"
+#include "ShaderManager.h"
 #include "Vector2.h"
 #include <string>
 
@@ -29,6 +30,7 @@ namespace System
 		virtual bool InitSystem() = 0;
 		void InitShaderManager();
 		void InitTextureManager();
+		void InitFontManager();
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
@@ -37,6 +39,7 @@ namespace System
 
 		const Engine::ShaderManager* GetShaderManager() const;
 		const Engine::TextureManager* GetTextureManager() const;
+		const Engine::FontManager* GetFontManager() const;
 
 		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const = 0;
 		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const  = 0;
@@ -48,6 +51,7 @@ namespace System
 		GLRenderMode _RenderMode = GLRenderMode::LetterBox;
 		Engine::ShaderManager* m_shaderManager = nullptr;
 		Engine::TextureManager* m_textureManager = nullptr;
+		Engine::FontManager* m_fontManager = nullptr;
 
 	private:
 		// cursor

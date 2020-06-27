@@ -14,6 +14,11 @@ namespace System
 		m_textureManager = new Engine::TextureManager(*this);
 	}
 
+	void SystemBase::InitFontManager()
+	{
+        m_fontManager = new Engine::FontManager(*this);
+	}
+
 	const GLRenderMode& SystemBase::GetRenderMode()
 	{
 		return _RenderMode;
@@ -32,5 +37,10 @@ namespace System
 	const Engine::TextureManager* SystemBase::GetTextureManager() const
 	{
 		return m_textureManager;
+	}
+
+	const Engine::FontManager* SystemBase::GetFontManager() const
+	{
+		return m_fontManager;
 	}
 }
