@@ -1,9 +1,8 @@
-//
-//  Sprite.hpp
-//  gl-tris
-//
-//  Created by mlogic1 on 29/12/2018.
-//
+/**
+    Sprite
+	@author mlogic1
+	@date 29.12.2018.
+*/
 
 #ifndef SPRITE_H
 #define SPRITE_H
