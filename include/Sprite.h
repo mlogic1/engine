@@ -36,10 +36,6 @@ namespace Engine
 		GLuint GetTexture();
 
 	protected:
-		/*  normalize  */
-		void GetNormalizedCoordinates(float(&arr)[20]);
-
-	protected:
 		// texture
 		GLuint m_texture; // gl texture ID
 
@@ -81,9 +77,6 @@ namespace Engine
 		const float texBLY = 0.0f;
 		const float texTLX = 0.0f;
 		const float texTLY = 1.0f;
-
-	private:
-		const std::string m_spriteID = "DefaultSprite";	// TODO every sprite needs a unique ID
 	};
 }
 

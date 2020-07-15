@@ -51,6 +51,9 @@ namespace Engine
 			// TODO destination
 
 		protected:
+			void GetNormalizedCoordinates(float(&arr)[20]);
+
+		protected:
 			const std::string m_objectID = "DefaultObject";	// TODO every object needs a unique ID
 	};
 }
