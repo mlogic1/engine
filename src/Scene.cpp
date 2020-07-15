@@ -16,9 +16,9 @@ namespace SceneSystem
 	void Scene::Update()
 	{
 		this->m_gameCamera->update(0.016f);
-		for (Sprite* sprite : m_sprites)
+		for (Engine::SceneObject* object : m_sceneObjects)
 		{
-			sprite->update(0.0016);
+			object->update(0.0016);
 		}
 		UpdateScene();
 	}
@@ -29,7 +29,7 @@ namespace SceneSystem
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		glDisable(GL_DEPTH_TEST);
-		for (Sprite* sprite : m_sprites)
+		for (Engine::SceneObject* sprite : m_sceneObjects)
 		{
 			sprite->render();
 		}
@@ -41,14 +41,14 @@ namespace SceneSystem
 
 	}
 
-	void Scene::InstantiateSprite(Sprite* sprite)
+	void Scene::InstantiateSprite(Engine::Sprite* sprite)
 	{
-		m_sprites.push_back(sprite);
+		m_sceneObjects.push_back(sprite);
 	}
 
 	void Scene::InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID)
 	{
-		m_sprites.push_back(new Sprite(shader, rect, textureID));
+		m_sceneObjects.push_back(new Engine::Sprite(shader, rect, textureID));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)

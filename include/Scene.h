@@ -12,6 +12,8 @@
 #include "IInputReceiver.h"
 #include "Key.h"
 #include "Shader.h"
+#include "SceneObject.h"
+#include "Sprite.h"
 #include "Sprite.h"
 #include "Rect.h"
 #include <string>
@@ -28,7 +30,7 @@ namespace SceneSystem
 		void Update();
 		void Render();
 		virtual void ReceiveKeyInput(System::Key Key) override;
-		void InstantiateSprite(Sprite* sprite);
+		void InstantiateSprite(Engine::Sprite* sprite);
 		void InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID);
 		void RemoveSprite(const std::string& spriteID);
 
@@ -39,7 +41,7 @@ namespace SceneSystem
 	protected:
 		std::string m_sceneName;
 		GameCamera* m_gameCamera;
-		std::vector<Sprite*> m_sprites;
+		std::vector<Engine::SceneObject*> m_sceneObjects;
 	};
 }
 

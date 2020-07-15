@@ -34,6 +34,7 @@ namespace Engine
 			virtual bool GetVisible();
 			Vector2f GetPosition();
 			Vector2f GetSize();
+			std::string GetID();
 
 			virtual void SetVisible(bool visibleState);
 			void SetPosition(Vector2f position);
@@ -52,7 +53,6 @@ namespace Engine
 		protected:
 			const std::string m_objectID = "DefaultObject";	// TODO every object needs a unique ID
 	};
-
 }
 
 #endif /* SCENE_OBJECT_H */
