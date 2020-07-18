@@ -11,3 +11,8 @@
 [submodule "lib/freetype"]
 	path = lib/freetype
 	url = https://github.com/aseprite/freetype2.git
+
+[submodule "lib/oboe"]
+	path = lib/oboe
+	url = https://github.com/google/oboe.git
+	branch = 1.4-stable

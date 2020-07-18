@@ -98,7 +98,7 @@ namespace Engine
                     texture,
                     glm::ivec2(fontFace->glyph->bitmap.width, fontFace->glyph->bitmap.rows),
                     glm::ivec2(fontFace->glyph->bitmap_left, fontFace->glyph->bitmap_top),
-                    fontFace->glyph->advance.x
+                    static_cast<unsigned int>(fontFace->glyph->advance.x)
                 };
                 m_characters.insert(std::pair<char, Character>(i, character));
             }
