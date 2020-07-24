@@ -1,9 +1,21 @@
 #include "SceneManager.h"
+#include "SystemBase.h"
 #include "Constants.h"
 #include <glad/glad.h>
 
 namespace SceneSystem
 {
+	SceneManager::SceneManager(const System::SystemBase& systemRef) :
+		m_systemRef(systemRef)
+	{
+
+	}
+
+	SceneManager::~SceneManager()
+	{
+
+	}
+
 	void SceneManager::Update()
 	{
 		if (this->m_currentScene != nullptr)
@@ -21,13 +33,5 @@ namespace SceneSystem
 	void SceneManager::ReceiveKeyInput(System::Key Key)
 	{
 		this->m_currentScene->ReceiveKeyInput(Key);
-	}
-
-	SceneManager::SceneManager()
-	{
-	}
-
-	SceneManager::~SceneManager()
-	{
 	}
 }

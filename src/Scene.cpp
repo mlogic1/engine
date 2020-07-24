@@ -51,6 +51,11 @@ namespace SceneSystem
 		m_sceneObjects.push_back(new Engine::Sprite(shader, rect, textureID));
 	}
 
+	void Scene::InstantiateFontObject(Shader* fontShader, Rect fontRect, std::map<char, Engine::Character> supportedCharacters, std::string text)
+	{
+		m_sceneObjects.push_back(new Engine::TextObject(fontShader, fontRect, supportedCharacters, text));
+	}
+
 	void Scene::RemoveSprite(const std::string& spriteID)
 	{
 		// TODO implement

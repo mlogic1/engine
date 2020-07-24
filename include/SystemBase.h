@@ -28,14 +28,18 @@ namespace System
 	{
 	public:
 		virtual bool InitSystem() = 0;
+		
+		void InitSceneManager();
 		void InitShaderManager();
 		void InitTextureManager();
 		void InitFontManager();
+
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
 		void ReceiveKeyInput(Key key) override;
 		// TODO getsystemtype
+		SceneSystem::SceneManager* m_sceneManager;	// TODO move to proctected part
 
 		const Engine::ShaderManager* GetShaderManager() const;
 		const Engine::TextureManager* GetTextureManager() const;
@@ -43,8 +47,7 @@ namespace System
 
 		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const = 0;
 		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const  = 0;
-
-		SceneSystem::SceneManager m_sceneManager;	// TODO move to proctected part
+		
 
 	protected:
 		// rendering mode // TODO maybe move this to a global configuration source file

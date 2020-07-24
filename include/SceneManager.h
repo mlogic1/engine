@@ -16,7 +16,7 @@ namespace SceneSystem
 	class SceneManager : public System::IInputReceiver
 	{
 	public:
-		SceneManager();
+		SceneManager(const System::SystemBase& systemRef);
 		SceneManager(const SceneManager& SceneManager) = delete;
 		~SceneManager();
 
@@ -25,6 +25,7 @@ namespace SceneSystem
 		void ReceiveKeyInput(System::Key Key) override;
 
 	private:
+		const System::SystemBase& m_systemRef;
 		Scene* m_currentScene = nullptr;
 	};
 }

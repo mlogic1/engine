@@ -22,12 +22,22 @@ namespace System
 
 namespace Engine
 {
+	struct Character
+	{
+		unsigned int TextureID;  // ID handle of the glyph texture
+		glm::ivec2   Size;       // Size of glyph
+		glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
+		unsigned int Advance;    // Offset to advance to next glyph
+	};
+
 	class FontManager
 	{
 	public:
 		FontManager(const System::SystemBase& systemRef);
 		FontManager(const FontManager& FontManager) = delete;
 		~FontManager();
+
+		std::map<char, Character> GetSupportedCharacters() const;
 
         void RenderTest(std::string text);  // TODO move this to TextObject file
 
@@ -39,14 +49,6 @@ namespace Engine
 		const std::string FONTS_LIST_FILE = "fonts.json";   // move this to constants
 
 		std::map<std::string, FT_Face> m_fonts;
-
-        struct Character
-        {
-            unsigned int TextureID;  // ID handle of the glyph texture
-            glm::ivec2   Size;       // Size of glyph
-            glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
-            unsigned int Advance;    // Offset to advance to next glyph
-        };
 
         std::map<char, Character> m_characters;
 

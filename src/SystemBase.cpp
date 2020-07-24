@@ -4,6 +4,11 @@ namespace System
 {
 	SystemBase* SYSTEM_PTR = nullptr;
 
+	void SystemBase::InitSceneManager()
+	{
+		m_sceneManager = new SceneSystem::SceneManager(*this);
+	}
+
 	void SystemBase::InitShaderManager()
 	{
 		m_shaderManager = new Engine::ShaderManager(*this);
@@ -26,7 +31,7 @@ namespace System
 
 	void SystemBase::ReceiveKeyInput(Key key)
 	{
-		m_sceneManager.ReceiveKeyInput(key);
+		m_sceneManager->ReceiveKeyInput(key);
 	}
 
 	const Engine::ShaderManager* SystemBase::GetShaderManager() const

@@ -7,9 +7,15 @@
 #ifndef TEXTOBJECT_H
 #define TEXTOBJECT_H
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include "FontManager.h"
 #include "SceneObject.h"
 #include "Shader.h"
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <map>
 #include <string>
 
 namespace Engine
@@ -18,7 +24,7 @@ namespace Engine
 	{
 
 	public:
-		TextObject(Shader* fontShader, Rect spriteRect, std::string text = "");
+		TextObject(Shader* fontShader, Rect spriteRect, std::map<char, Character> supportedCharacters, std::string text = "");
 		~TextObject();
 
 		/***************************************
@@ -27,14 +33,20 @@ namespace Engine
 		void update(float deltaTime) override;
 		void render() override;
 
-		/***************************************
-		 * textures
-		***************************************/
 		void SetText(const std::string& newText);
-		std::string GetText();
+		const std::string& GetText();
 
 	private:
 		std::string m_text;
+
+		glm::mat4 projection;
+		Shader* m_fontShader;
+		std::map<char, Character> m_characters;
+
+		/***************************************
+		 * GL
+		***************************************/
+		unsigned int VAO, VBO;
 	};
 }
 

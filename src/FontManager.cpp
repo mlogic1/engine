@@ -122,6 +122,11 @@ namespace Engine
         // TODO release all fonts
 	}
 
+    std::map<char, Character> FontManager::GetSupportedCharacters() const
+    {
+        return m_characters;
+    }
+
 	void FontManager::RenderTest(std::string text)
 	{
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(VIRTUAL_RESOLUTION_WIDTH), 0.0f, static_cast<float>(VIRTUAL_RESOLUTION_HEIGHT));

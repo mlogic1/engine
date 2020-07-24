@@ -43,7 +43,7 @@ namespace System
 	void SystemDesktop::Update()
 	{
 		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
-		m_sceneManager.Update();
+		m_sceneManager->Update();
 
 		m_fontManager->RenderTest("fonttest");
 
@@ -221,6 +221,7 @@ namespace System
 		// TODO error checking
 		SYSTEM_PTR = new SystemDesktop();
 		SYSTEM_PTR->InitSystem();
+		SYSTEM_PTR->InitSceneManager();
 		SYSTEM_PTR->InitShaderManager();
 		SYSTEM_PTR->InitTextureManager();
 		SYSTEM_PTR->InitFontManager();

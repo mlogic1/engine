@@ -8,14 +8,16 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "FontManager.h"
 #include "GameCamera.h"
 #include "IInputReceiver.h"
 #include "Key.h"
 #include "Shader.h"
 #include "SceneObject.h"
 #include "Sprite.h"
-#include "Sprite.h"
+#include "TextObject.h"
 #include "Rect.h"
+#include <map>
 #include <string>
 #include <vector>
 
@@ -32,6 +34,7 @@ namespace SceneSystem
 		virtual void ReceiveKeyInput(System::Key Key) override;
 		void InstantiateSprite(Engine::Sprite* sprite);
 		void InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID);
+		void InstantiateFontObject(Shader* fontShader, Rect spriteRect, std::map<char, Engine::Character> supportedCharacters, std::string text);
 		void RemoveSprite(const std::string& spriteID);
 
 	protected:
