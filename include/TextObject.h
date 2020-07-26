@@ -24,7 +24,7 @@ namespace Engine
 	{
 
 	public:
-		TextObject(Shader* fontShader, Rect spriteRect, std::map<char, Character> supportedCharacters, std::string text = "");
+		TextObject(Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text = "");
 		~TextObject();
 
 		/***************************************

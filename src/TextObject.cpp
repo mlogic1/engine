@@ -6,9 +6,10 @@
 
 namespace Engine
 {
-	TextObject::TextObject(Shader* fontShader, Rect spriteRect, std::map<char, Character> supportedCharacters, std::string text)
-		: SceneObject(spriteRect),
+	TextObject::TextObject(Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text)
+		: SceneObject(fontRect),
 		m_fontShader(fontShader),
+        m_characters(supportedCharacters),
 		m_text(text)
 	{
 		projection = glm::ortho(0.0f, static_cast<float>(VIRTUAL_RESOLUTION_WIDTH), 0.0f, static_cast<float>(VIRTUAL_RESOLUTION_HEIGHT));
@@ -44,6 +45,7 @@ namespace Engine
 
         //float x = 50, y = 50, scale = 1.0f;
         float temp_x = m_position.x;
+        float temp_y = VIRTUAL_RESOLUTION_HEIGHT - m_position.y - m_size.y;
         float scale = 1.0f;
 
         // iterate through all characters
@@ -53,7 +55,7 @@ namespace Engine
             Character ch = m_characters[*c];
 
             float xpos = temp_x + ch.Bearing.x * scale;
-            float ypos = m_position.y - (ch.Size.y - ch.Bearing.y) * scale;
+            float ypos = temp_y - (ch.Size.y - ch.Bearing.y) * scale;
 
             float w = ch.Size.x * scale;
             float h = ch.Size.y * scale;
