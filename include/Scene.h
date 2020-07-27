@@ -33,8 +33,8 @@ namespace SceneSystem
 		void Render();
 		virtual void ReceiveKeyInput(System::Key Key) override;
 		void InstantiateSprite(Engine::Sprite* sprite);
-		void InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID);
-		void InstantiateFontObject(Shader* fontShader, Rect spriteRect, std::map<char, Engine::Character> supportedCharacters, std::string text);
+		void InstantiateSprite(Rect rect, const GLuint& textureID);
+		void InstantiateFontObject(Rect spriteRect, std::string text);
 		void RemoveSprite(const std::string& spriteID);
 
 	protected:

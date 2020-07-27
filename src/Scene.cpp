@@ -1,5 +1,7 @@
 #include "Scene.h"
 #include "Log.h"
+#include "SpriteFactory.h"
+#include "TextObjectFactory.h"
 #include <glad/glad.h>
 
 namespace SceneSystem
@@ -46,14 +48,14 @@ namespace SceneSystem
 		m_sceneObjects.push_back(sprite);
 	}
 
-	void Scene::InstantiateSprite(Shader* shader, Rect rect, const GLuint& textureID)
+	void Scene::InstantiateSprite(Rect rect, const GLuint& textureID)
 	{
-		m_sceneObjects.push_back(new Engine::Sprite(shader, rect, textureID));
+		m_sceneObjects.push_back(Engine::SpriteFactory::Create(rect, textureID));
 	}
 
-	void Scene::InstantiateFontObject(Shader* fontShader, Rect fontRect, std::map<char, Engine::Character> supportedCharacters, std::string text)
+	void Scene::InstantiateFontObject(Rect fontRect, std::string text)
 	{
-		m_sceneObjects.push_back(new Engine::TextObject(fontShader, fontRect, supportedCharacters, text));
+		m_sceneObjects.push_back(Engine::TextObjectFactory::Create(fontRect, text));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)

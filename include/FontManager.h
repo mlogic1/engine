@@ -39,8 +39,6 @@ namespace Engine
 
 		std::map<char, Character> GetSupportedCharacters() const;
 
-        void RenderTest(std::string text);  // TODO move this to TextObject file
-
 	private:
 		FT_Library m_fontLibrary;
 		const System::SystemBase& m_systemRef;

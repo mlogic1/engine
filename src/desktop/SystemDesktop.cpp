@@ -45,8 +45,6 @@ namespace System
 		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
 		m_sceneManager->Update();
 
-		m_fontManager->RenderTest("fonttest");
-
 		glfwSwapBuffers(m_gameWindow);
 		glfwPollEvents();
 	}
