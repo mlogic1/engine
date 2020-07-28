@@ -32,7 +32,7 @@ namespace Engine
 
 	void TextObject::update(float deltaTime)
 	{
-
+        SceneObject::update(deltaTime);
 	}
 
 	void TextObject::render()
@@ -43,7 +43,6 @@ namespace Engine
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(VAO);
 
-        //float x = 50, y = 50, scale = 1.0f;
         float temp_x = m_position.x;
         float temp_y = VIRTUAL_RESOLUTION_HEIGHT - m_position.y - m_size.y;
         float scale = 1.0f;

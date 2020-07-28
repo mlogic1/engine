@@ -40,6 +40,9 @@ namespace Engine
 			void SetPosition(Vector2f position);
 			void SetSize(Vector2f size);
 
+			void AddNestedObject(SceneObject* object);
+			const std::vector<SceneObject*>& GetNestedObjects();
+
 		protected:
 			// properties
 			bool m_isVisible = true;
@@ -49,6 +52,8 @@ namespace Engine
 			// TODO z-order
 			// TODO angle
 			// TODO destination
+
+			std::vector<SceneObject*> m_nestedObjects;
 
 		protected:
 			void GetNormalizedCoordinates(float(&arr)[20]);

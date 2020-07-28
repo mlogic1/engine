@@ -70,6 +70,8 @@ namespace Engine
 
 	void Sprite::update(float deltaTime)
 	{
+		SceneObject::update(deltaTime);
+
 		float vertices[20];
 		GetNormalizedCoordinates(vertices);
 

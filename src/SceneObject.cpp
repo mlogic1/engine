@@ -62,6 +62,16 @@ namespace Engine
         m_size = size;
     }
 
+    void SceneObject::AddNestedObject(SceneObject* object)
+    {
+        m_nestedObjects.push_back(object);
+    }
+
+    const std::vector<SceneObject*>& SceneObject::GetNestedObjects()
+    {
+        return m_nestedObjects;
+    }
+
     void SceneObject::GetNormalizedCoordinates(float(&arr)[20])
     {
         float normX, normY;

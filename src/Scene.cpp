@@ -9,6 +9,7 @@ namespace SceneSystem
 	Scene::Scene(const char* SceneName) : m_sceneName(SceneName)
 	{
 		m_gameCamera = new GameCamera();
+		// TODO construct all scene objects from file
 	}
 
 	Scene::~Scene()
