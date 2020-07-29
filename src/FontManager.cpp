@@ -22,7 +22,7 @@ namespace Engine
 
         Log::Write("Success init font manager", Log::LogType::SUCCESS);
         std::string fontsJsonString;
-        std::string pathJsonFonts = PATH_ASSETS + FONTS_LIST_FILE;
+        std::string pathJsonFonts = std::string(PATH_ASSETS) + std::string(ENGINE_FILE_FONTS);
         m_systemRef.LoadStringDataFromAssets(pathJsonFonts, fontsJsonString);
 
         std::vector<FontDataRecord> fontData;

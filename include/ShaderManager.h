@@ -30,7 +30,6 @@ namespace Engine
         private:
             std::vector<Shader*> m_shaders;
 
-			const std::string SHADER_LIST_FILE = "shaders.json";
 			const System::SystemBase& m_systemRef;
 
 			struct ShaderDataRecord

@@ -1,6 +1,6 @@
 #include "TextureManager.h"
-#include "SystemBase.h"
 #include "Constants.h"
+#include "SystemBase.h"
 #include <nlohmann/json.hpp>
 #include <stb_image.h>
 #include <vector>
@@ -11,7 +11,7 @@ namespace Engine
 		m_systemRef(system)
 	{
 		std::string texturesJsonString;
-		std::string texturesJsonPath = PATH_ASSETS + TEXTURE_LIST_FILE;
+		std::string texturesJsonPath = std::string(PATH_ASSETS) + std::string(ENGINE_FILE_TEXTURES);
 		m_systemRef.LoadStringDataFromAssets(texturesJsonPath, texturesJsonString);
 
 		std::vector<TextureDataRecord> textureData;

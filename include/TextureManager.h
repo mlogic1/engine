@@ -28,8 +28,6 @@ namespace Engine
 
         private:
 			std::map<std::string, GLuint> m_textures;
-
-			const std::string TEXTURE_LIST_FILE = "textures.json"; // move this to constants
 			const System::SystemBase& m_systemRef;
 
 			struct TextureDataRecord

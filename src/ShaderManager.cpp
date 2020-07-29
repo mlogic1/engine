@@ -10,7 +10,7 @@ namespace Engine
 		m_systemRef(system)
 	{
 		std::string shadersJsonString;
-		std::string shadersJsonPath = PATH_ASSETS + std::string("shaders.json");
+		std::string shadersJsonPath = std::string(PATH_ASSETS) + std::string(ENGINE_FILE_SHADERS);
 		m_systemRef.LoadStringDataFromAssets(shadersJsonPath, shadersJsonString);
 
 		std::vector<ShaderDataRecord> shaderData;

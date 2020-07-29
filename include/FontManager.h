@@ -44,8 +44,6 @@ namespace Engine
 		const System::SystemBase& m_systemRef;
 		unsigned int VAO, VBO;
 
-		const std::string FONTS_LIST_FILE = "fonts.json";   // move this to constants
-
 		std::map<std::string, FT_Face> m_fonts;
 
         std::map<char, Character> m_characters;

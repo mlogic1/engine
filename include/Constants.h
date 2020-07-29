@@ -5,6 +5,11 @@
 #define GAME_NAME "GAME"
 #define STARTING_SCENE "Scene_Main_Menu"
 
+#define ENGINE_FILE_FONTS "fonts.json"
+#define ENGINE_FILE_SCENES "scenes.json"
+#define ENGINE_FILE_SHADERS "shaders.json"
+#define ENGINE_FILE_TEXTURES "textures.json"
+
 #define VIRTUAL_RESOLUTION_WIDTH 1280
 #define VIRTUAL_RESOLUTION_HEIGHT 720
 
