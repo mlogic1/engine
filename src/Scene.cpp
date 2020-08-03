@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include "Log.h"
-#include "SpriteFactory.h"
-#include "TextObjectFactory.h"
+#include "SceneObjectFactory.h"
 #include <glad/glad.h>
 
 namespace SceneSystem
@@ -30,7 +29,7 @@ namespace SceneSystem
 	{
 		glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		glDisable(GL_DEPTH_TEST);
 		for (Engine::SceneObject* sprite : m_sceneObjects)
 		{
@@ -51,12 +50,12 @@ namespace SceneSystem
 
 	void Scene::InstantiateSprite(Rect rect, const GLuint& textureID)
 	{
-		m_sceneObjects.push_back(Engine::SpriteFactory::Create(rect, textureID));
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateSprite(rect, textureID));
 	}
 
 	void Scene::InstantiateFontObject(Rect fontRect, std::string text)
 	{
-		m_sceneObjects.push_back(Engine::TextObjectFactory::Create(fontRect, text));
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(fontRect, text));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)
