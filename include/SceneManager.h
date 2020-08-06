@@ -10,6 +10,8 @@
 
 #include "Scene.h"
 #include "IInputReceiver.h"
+#include <map>
+#include <string>
 
 namespace SceneSystem
 {
@@ -22,11 +24,21 @@ namespace SceneSystem
 
 		void Update();
 		void SwitchScene(Scene* newScene);
+		void SwitchScene(std::string newScene);
 		void ReceiveKeyInput(System::Key Key) override;
 
 	private:
 		const System::SystemBase& m_systemRef;
 		Scene* m_currentScene = nullptr;
+
+		struct SceneDataRecord
+        {
+            std::string SceneName;
+            std::string SceneFileName;
+            std::string SceneInstance;
+        };
+
+		std::map<std::string, SceneDataRecord> m_scenes;
 	};
 }
 

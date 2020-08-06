@@ -26,7 +26,7 @@ namespace SceneSystem
 	class Scene : public System::IInputReceiver
 	{
 	public:
-		Scene(const char* SceneName);
+		Scene(const std::string& SceneName, const std::string& sceneFileName);
 		virtual ~Scene();
 
 		void Update();

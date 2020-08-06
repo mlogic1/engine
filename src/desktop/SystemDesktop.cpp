@@ -93,7 +93,7 @@ namespace System
 		std::string temp = "";
 
 		// load data from file
-		std::cout << "Loading shader: " << fileName << std::endl;
+		std::cout << "Loading file: " << fileName << std::endl;
 
 		if (fileInStream.is_open())
 		{

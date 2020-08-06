@@ -1,14 +1,17 @@
 #include "Scene.h"
 #include "Log.h"
+#include "SceneLoader.h"
 #include "SceneObjectFactory.h"
 #include <glad/glad.h>
 
 namespace SceneSystem
 {
-	Scene::Scene(const char* SceneName) : m_sceneName(SceneName)
+	Scene::Scene(const std::string& SceneName, const std::string& sceneFileName) : m_sceneName(SceneName)
 	{
 		m_gameCamera = new GameCamera();
-		// TODO construct all scene objects from file
+
+
+		m_sceneObjects = Engine::SceneLoader::LoadScene(sceneFileName);
 	}
 
 	Scene::~Scene()
