@@ -26,6 +26,7 @@
         #define PATH_SHADERS PATH_ASSETS "shaders/"
         #define PATH_TEXTURES PATH_ASSETS "textures/"
         #define PATH_FONTS PATH_ASSETS "fonts/"
+        #define PATH_SCENES PATH_ASSETS "scenes/"
     #endif
 #elif defined(__ANDROID__)
     #define PATH_SHADERS "shaders/"
