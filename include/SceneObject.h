@@ -7,6 +7,7 @@
 #ifndef SCENE_OBJECT_H
 #define SCENE_OBJECT_H
 
+#include "IIdentifiable.h"
 #include "GameObject.h"
 #include "Rect.h"
 #include "Vector2.h"
@@ -15,7 +16,7 @@
 
 namespace Engine
 {
-	class SceneObject : public GameObject
+	class SceneObject : public GameObject, public IIdentifiable
 	{
 		public:
 			SceneObject(Rect objectRect);
@@ -34,7 +35,7 @@ namespace Engine
 			virtual bool GetVisible();
 			Vector2f GetPosition();
 			Vector2f GetSize();
-			std::string GetID();
+			std::string GetID() override;
 
 			virtual void SetVisible(bool visibleState);
 			void SetPosition(Vector2f position);
