@@ -25,8 +25,7 @@ namespace Engine
         {
             for (auto data : sceneObjectsData.items())
 			{
-                Log::Write("loaded item: " + data.key());
-                std::string objectType = data.key();
+                std::string objectType = data.value()["type"];
 
                 if (objectType == "Sprite")
                 {
