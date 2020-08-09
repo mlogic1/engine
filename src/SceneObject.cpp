@@ -3,16 +3,18 @@
 
 namespace Engine
 {
-    SceneObject::SceneObject(Rect objectRect) :
+    SceneObject::SceneObject(Rect objectRect, std::string objectID) :
         m_position(objectRect.x, objectRect.y),
-        m_size(objectRect.w, objectRect.h)
+        m_size(objectRect.w, objectRect.h),
+        m_objectID(objectID)
     {
 
     }
 
-	SceneObject::SceneObject(Vector2f objectPosition, Vector2f objectSize) :
+	SceneObject::SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID) :
         m_position(objectPosition),
-        m_size(objectSize)
+        m_size(objectSize),
+        m_objectID(objectID)
 	{
 
 	}
@@ -42,7 +44,7 @@ namespace Engine
         return m_size;
     }
 
-    std::string SceneObject::GetID()
+    std::string SceneObject::GetID() const
     {
         return m_objectID;
     }

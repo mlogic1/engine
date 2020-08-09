@@ -6,14 +6,14 @@
 
 namespace Engine
 {
-	TextObject::TextObject(Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text)
-		: SceneObject(fontRect),
+	TextObject::TextObject(std::string objectID, Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text)
+		: SceneObject(fontRect, objectID),
 		m_fontShader(fontShader),
         m_characters(supportedCharacters),
 		m_text(text)
 	{
 		projection = glm::ortho(0.0f, static_cast<float>(VIRTUAL_RESOLUTION_WIDTH), 0.0f, static_cast<float>(VIRTUAL_RESOLUTION_HEIGHT));
-        
+
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glBindVertexArray(VAO);

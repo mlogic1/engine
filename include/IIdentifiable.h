@@ -5,6 +5,6 @@ namespace Engine
     class IIdentifiable
     {
         public:
-            virtual std::string GetID() = 0;
+            virtual std::string GetID() const = 0;
     };
 }

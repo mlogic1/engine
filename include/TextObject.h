@@ -20,11 +20,11 @@
 
 namespace Engine
 {
-	class TextObject : public SceneObject 
+	class TextObject : public SceneObject
 	{
 
 	public:
-		TextObject(Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text = "");
+		TextObject(std::string objectID, Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text = "");
 		~TextObject();
 
 		/***************************************

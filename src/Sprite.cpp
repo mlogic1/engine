@@ -19,8 +19,8 @@ namespace Engine
 	 * public methods
 	***************************************/
 
-	Sprite::Sprite(Shader *spriteShader, Rect spriteRect, GLuint textureID) :
-		SceneObject(spriteRect),
+	Sprite::Sprite(std::string objectID, Shader *spriteShader, Rect spriteRect, GLuint textureID) :
+		SceneObject(spriteRect, objectID),
 		m_texture(textureID)
 	{
 		this->m_spriteShader = spriteShader;

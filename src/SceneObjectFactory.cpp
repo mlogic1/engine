@@ -7,16 +7,16 @@
 
 namespace Engine
 {
-    SceneObject* SceneObjectFactory::CreateSprite(Rect spriteRect, GLuint textureID)
+    SceneObject* SceneObjectFactory::CreateSprite(std::string objectID, Rect spriteRect, GLuint textureID)
     {
         Shader* spriteShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("OrthoShader");
-        return new Sprite(spriteShader, spriteRect, textureID);
+        return new Sprite(objectID, spriteShader, spriteRect, textureID);
     }
 
 
-    SceneObject* SceneObjectFactory::CreateTextObject(Rect objectRect, std::string text)
+    SceneObject* SceneObjectFactory::CreateTextObject(std::string objectID, Rect objectRect, std::string text)
     {
         Shader* fontShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("FontShader");
-		return new TextObject(fontShader, objectRect, System::SYSTEM_PTR->GetFontManager()->GetSupportedCharacters(), text);
+		return new TextObject(objectID, fontShader, objectRect, System::SYSTEM_PTR->GetFontManager()->GetSupportedCharacters(), text);
     }
 }

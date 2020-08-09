@@ -42,11 +42,23 @@ namespace System
 
 	void SystemDesktop::Update()
 	{
+        float currentFrame = static_cast<float>(glfwGetTime());
+		m_deltaTime = currentFrame - lastFrame;
+		deltaTimeAccumulated += m_deltaTime;
+		lastFrame = currentFrame;
 		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
 		m_sceneManager->Update();
 
 		glfwSwapBuffers(m_gameWindow);
 		glfwPollEvents();
+
+		++frameCounter;
+		if (deltaTimeAccumulated > 1.0f)
+		{
+			m_FPS = frameCounter / deltaTimeAccumulated;
+			frameCounter = 0;
+			deltaTimeAccumulated = .0f;
+		}
 	}
 
 	bool SystemDesktop::IsRunning()

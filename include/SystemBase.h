@@ -28,7 +28,7 @@ namespace System
 	{
 	public:
 		virtual bool InitSystem() = 0;
-		
+
 		void InitSceneManager();
 		void InitShaderManager();
 		void InitTextureManager();
@@ -39,6 +39,9 @@ namespace System
 		const GLRenderMode& GetRenderMode();
 		void ReceiveKeyInput(Key key) override;
 		// TODO getsystemtype
+		float GetDeltaTime() const;
+		float GetFPS() const;
+
 		SceneSystem::SceneManager* m_sceneManager;	// TODO move to proctected part
 
 		const Engine::ShaderManager* GetShaderManager() const;
@@ -47,7 +50,7 @@ namespace System
 
 		virtual bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const = 0;
 		virtual bool LoadStringDataFromAssets(const std::string fileName, std::string& data) const  = 0;
-		
+
 
 	protected:
 		// rendering mode // TODO maybe move this to a global configuration source file
@@ -55,6 +58,9 @@ namespace System
 		Engine::ShaderManager* m_shaderManager = nullptr;
 		Engine::TextureManager* m_textureManager = nullptr;
 		Engine::FontManager* m_fontManager = nullptr;
+
+		float m_deltaTime = -1.0f;
+		float m_FPS = -1.0f;
 
 	private:
 		// cursor

@@ -31,6 +31,11 @@ namespace System
 		GLFWwindow* m_gameWindow = nullptr;
 
 		Vector2<double> m_mousePosition;
+
+		// delta
+		float lastFrame = -1.0f;
+		float deltaTimeAccumulated = 0.f;
+		int frameCounter = 0;
 	};
 }
 

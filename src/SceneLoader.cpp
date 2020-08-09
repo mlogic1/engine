@@ -15,8 +15,6 @@ namespace Engine
         const std::string sceneFileName = std::string(PATH_SCENES) + sceneName;
         std::string sceneDataStr("");
         System::SYSTEM_PTR->LoadStringDataFromAssets(sceneFileName, sceneDataStr);
-        Log::Write("Loaded scene data: ");
-        Log::Write(sceneDataStr);
 
         nlohmann::json sceneData = nlohmann::json::parse(sceneDataStr);
         nlohmann::json sceneObjectsData = sceneData.at("SceneObjects");
@@ -27,7 +25,7 @@ namespace Engine
 			{
                 std::string objectType = data.value()["type"];
 
-                if (objectType == "Sprite")
+                if (objectType == TYPE_SPRITE)
                 {
                     std::string id = data.value()["id"];
                     std::string textureIDStr = data.value()["texture"];
@@ -40,9 +38,9 @@ namespace Engine
                     spriteRect.w = data.value()["rect"]["w"];
                     spriteRect.h = data.value()["rect"]["h"];
 
-                    sceneObjects.push_back(SceneObjectFactory::CreateSprite(spriteRect, textureID));
+                    sceneObjects.push_back(SceneObjectFactory::CreateSprite(id, spriteRect, textureID));
                 }
-                else if (objectType == "TextObject")
+                else if (objectType == TYPE_TEXT_OBJECT)
                 {
                     std::string id = data.value()["id"];
                     std::string text = data.value()["text"];
@@ -53,7 +51,7 @@ namespace Engine
                     objectRect.w = data.value()["rect"]["w"];
                     objectRect.h = data.value()["rect"]["h"];
 
-                    sceneObjects.push_back(SceneObjectFactory::CreateTextObject(objectRect, text));
+                    sceneObjects.push_back(SceneObjectFactory::CreateTextObject(id, objectRect, text));
                 }
                 else
                 {

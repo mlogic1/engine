@@ -66,7 +66,7 @@ namespace Engine
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
             Log::Write("Loading all supported characters");
-            for (int i = 97 ; i < 123 ; ++i)
+            for (int i = 32 ; i < 123 ; ++i)
             {
                 if (FT_Load_Char(fontFace, static_cast<char>(i), FT_LOAD_RENDER))
                 {

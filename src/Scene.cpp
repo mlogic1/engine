@@ -51,18 +51,31 @@ namespace SceneSystem
 		m_sceneObjects.push_back(sprite);
 	}
 
-	void Scene::InstantiateSprite(Rect rect, const GLuint& textureID)
+	void Scene::InstantiateSprite(std::string objectID, Rect rect, const GLuint& textureID)
 	{
-		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateSprite(rect, textureID));
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateSprite(objectID, rect, textureID));
 	}
 
-	void Scene::InstantiateFontObject(Rect fontRect, std::string text)
+	void Scene::InstantiateFontObject(std::string objectID, Rect fontRect, std::string text)
 	{
-		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(fontRect, text));
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(objectID, fontRect, text));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)
 	{
 		// TODO implement
+	}
+
+	Engine::SceneObject* Scene::GetObject(const std::string& id)
+	{
+        for (Engine::SceneObject* object : m_sceneObjects)
+        {
+            if (object->GetID() == id)
+            {
+                return object;
+            }
+        }
+        std::string error("Unable to find object by ID: " + id);
+        throw error;
 	}
 }

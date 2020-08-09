@@ -11,10 +11,13 @@
 
 namespace Engine
 {
-    class SceneLoader
+    class SceneLoader final
     {
         public:
             static std::vector<SceneObject*> LoadScene(const std::string& sceneName);
 
+        private:
+            static const constexpr char* TYPE_SPRITE = "Sprite";
+            static const constexpr char* TYPE_TEXT_OBJECT = "TextObject";
     };
 }

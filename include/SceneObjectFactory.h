@@ -20,8 +20,8 @@ namespace Engine
 	class SceneObjectFactory final
 	{
 	public:
-        static SceneObject* CreateSprite(Rect spriteRect, GLuint textureID);
-        static SceneObject* CreateTextObject(Rect objectRect, std::string text = "");
+        static SceneObject* CreateSprite(std::string objectID, Rect spriteRect, GLuint textureID);
+        static SceneObject* CreateTextObject(std::string objectID, Rect objectRect, std::string text = "");
 	};
 }
 

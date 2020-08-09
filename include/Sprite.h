@@ -11,16 +11,16 @@
 #include "Shader.h"
 #include "Rect.h"
 #include <glad/glad.h>
-#include <iostream>
+#include <string>
 #include <vector>
 
 namespace Engine
 {
-	class Sprite : public SceneObject 
+	class Sprite : public SceneObject
 	{
 
 	public:
-		Sprite(Shader* spriteShader, Rect spriteRect, GLuint textureID);
+		Sprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID);
 		~Sprite();
 
 		/***************************************
@@ -62,7 +62,7 @@ namespace Engine
 		unsigned int VERTEX_COUNT = 20;
 
 		/*	default rect indices	*/
-		const unsigned int m_indices[6] = 
+		const unsigned int m_indices[6] =
 		{
 			0, 1, 3,
 			1, 2, 3

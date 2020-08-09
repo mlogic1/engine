@@ -34,6 +34,16 @@ namespace System
 		m_sceneManager->ReceiveKeyInput(key);
 	}
 
+    float SystemBase::GetDeltaTime() const
+    {
+        return m_deltaTime;
+    }
+
+    float SystemBase::GetFPS() const
+    {
+        return m_FPS;
+    }
+
 	const Engine::ShaderManager* SystemBase::GetShaderManager() const
 	{
 		return m_shaderManager;

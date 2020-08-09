@@ -19,8 +19,8 @@ namespace Engine
 	class SceneObject : public GameObject, public IIdentifiable
 	{
 		public:
-			SceneObject(Rect objectRect);
-			SceneObject(Vector2f objectPosition, Vector2f objectSize);
+			SceneObject(Rect objectRect, std::string objectID);
+			SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID);
 			~SceneObject();
 
 			/***************************************
@@ -35,7 +35,7 @@ namespace Engine
 			virtual bool GetVisible();
 			Vector2f GetPosition();
 			Vector2f GetSize();
-			std::string GetID() override;
+			std::string GetID() const override;
 
 			virtual void SetVisible(bool visibleState);
 			void SetPosition(Vector2f position);
@@ -44,23 +44,21 @@ namespace Engine
 			void AddNestedObject(SceneObject* object);
 			const std::vector<SceneObject*>& GetNestedObjects();
 
+        protected:
+			void GetNormalizedCoordinates(float(&arr)[20]);
+
 		protected:
 			// properties
 			bool m_isVisible = true;
 			Vector2f m_position;
 			Vector2f m_size;
+			const std::string m_objectID;
 			// TODO add pivots
 			// TODO z-order
 			// TODO angle
 			// TODO destination
 
 			std::vector<SceneObject*> m_nestedObjects;
-
-		protected:
-			void GetNormalizedCoordinates(float(&arr)[20]);
-
-		protected:
-			const std::string m_objectID = "DefaultObject";	// TODO every object needs a unique ID
 	};
 }
 
