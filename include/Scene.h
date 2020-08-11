@@ -36,7 +36,7 @@ namespace SceneSystem
 		void InstantiateSprite(std::string objectID, Rect rect, const GLuint& textureID);
 		void InstantiateFontObject(std::string objectID, Rect spriteRect, std::string text);
 		void RemoveSprite(const std::string& spriteID);
-		Engine::SceneObject* GetObject(const std::string& id);
+		Engine::SceneObject* GetSceneObject(const std::string& id);
 
 	protected:
 		virtual void UpdateScene() = 0;

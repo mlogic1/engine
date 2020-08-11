@@ -66,7 +66,7 @@ namespace SceneSystem
 		// TODO implement
 	}
 
-	Engine::SceneObject* Scene::GetObject(const std::string& id)
+	Engine::SceneObject* Scene::GetSceneObject(const std::string& id)
 	{
         for (Engine::SceneObject* object : m_sceneObjects)
         {
