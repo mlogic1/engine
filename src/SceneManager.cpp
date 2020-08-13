@@ -56,11 +56,11 @@ namespace SceneSystem
 
 	}
 
-	void SceneManager::Update()
+	void SceneManager::Update(float dt)
 	{
 		if (this->m_currentScene != nullptr)
 		{
-			this->m_currentScene->Update();
+			this->m_currentScene->Update(dt);
 			this->m_currentScene->Render();
 		}
 	}

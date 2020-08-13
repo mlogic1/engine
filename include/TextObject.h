@@ -17,6 +17,7 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace Engine
 {
@@ -24,7 +25,7 @@ namespace Engine
 	{
 
 	public:
-		TextObject(std::string objectID, Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::string text = "");
+		TextObject(std::string objectID, Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::vector<SceneObject*> nestedObjects, std::string text = "");
 		~TextObject();
 
 		/***************************************

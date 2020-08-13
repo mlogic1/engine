@@ -6,6 +6,10 @@
 */
 
 #include "SceneObject.h"
+#include "Rect.h"
+#include "SceneObjectFactory.h"
+#include <glad/glad.h>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
@@ -19,5 +23,8 @@ namespace Engine
         private:
             static const constexpr char* TYPE_SPRITE = "Sprite";
             static const constexpr char* TYPE_TEXT_OBJECT = "TextObject";
+
+            static SpriteData ParseSprite(nlohmann::json data);
+            static TextObjectData ParseTextObject(nlohmann::json data);
     };
 }

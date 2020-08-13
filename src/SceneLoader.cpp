@@ -1,10 +1,7 @@
 #include "SceneLoader.h"
 #include "Constants.h"
 #include "Log.h"
-#include "SceneObjectFactory.h"
 #include "SystemBase.h"
-#include <glad/glad.h>
-#include <nlohmann/json.hpp>
 
 namespace Engine
 {
@@ -24,21 +21,16 @@ namespace Engine
             for (auto data : sceneObjectsData.items())
 			{
                 std::string objectType = data.value()["type"];
+                nlohmann::json obj = data.value();
 
                 if (objectType == TYPE_SPRITE)
                 {
-                    std::string id = data.value()["id"];
-                    std::string textureIDStr = data.value()["texture"];
-                    Log::Write("requested texture: " + textureIDStr);
-                    GLuint textureID = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureIDStr);
-
-                    Rect spriteRect;
-                    spriteRect.x = data.value()["rect"]["x"];
-                    spriteRect.y = data.value()["rect"]["y"];
-                    spriteRect.w = data.value()["rect"]["w"];
-                    spriteRect.h = data.value()["rect"]["h"];
-
-                    sceneObjects.push_back(SceneObjectFactory::CreateSprite(id, spriteRect, textureID));
+                    SpriteData spriteData = ParseSprite(data.value());
+                    
+                    std::vector<SceneObject*> nestedObjects;
+                    SceneObject* object = SceneObjectFactory::CreateSprite(spriteData);
+                    
+                    sceneObjects.push_back(object);
                 }
                 else if (objectType == TYPE_TEXT_OBJECT)
                 {
@@ -51,7 +43,8 @@ namespace Engine
                     objectRect.w = data.value()["rect"]["w"];
                     objectRect.h = data.value()["rect"]["h"];
 
-                    sceneObjects.push_back(SceneObjectFactory::CreateTextObject(id, objectRect, text));
+                    std::vector<SceneObject*> nestedObjects;
+                    sceneObjects.push_back(SceneObjectFactory::CreateTextObject(id, objectRect, nestedObjects, text));
                 }
                 else
                 {
@@ -67,5 +60,42 @@ namespace Engine
 		}
 
         return sceneObjects;
+    }
+    
+    SpriteData SceneLoader::ParseSprite(nlohmann::json data)
+    {
+        SpriteData objectData;
+        
+        std::string id = data["id"];
+        std::string textureIDStr = data["texture"];
+        GLuint textureID = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureIDStr);
+
+        Rect spriteRect;
+        spriteRect.x = data["rect"]["x"];
+        spriteRect.y = data["rect"]["y"];
+        spriteRect.w = data["rect"]["w"];
+        spriteRect.h = data["rect"]["h"];
+        
+        objectData.id = id;
+        objectData.texture = textureID;
+        objectData.rect = spriteRect;
+        
+
+        bool containsNested = data.contains("nested_objects");
+        
+        if (containsNested)
+        {
+            for (auto nestedData : data["nested_objects"])
+            {
+                objectData.nestedObjects.push_back(ParseSprite(nestedData));
+            }
+        }
+
+        return objectData;
+    }
+
+    TextObjectData SceneLoader::ParseTextObject(nlohmann::json data)
+    {
+        return TextObjectData();
     }
 }

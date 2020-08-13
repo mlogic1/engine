@@ -3,18 +3,20 @@
 
 namespace Engine
 {
-    SceneObject::SceneObject(Rect objectRect, std::string objectID) :
+    SceneObject::SceneObject(Rect objectRect, std::string objectID, std::vector<SceneObject*> nestedObjects) :
         m_position(objectRect.x, objectRect.y),
         m_size(objectRect.w, objectRect.h),
-        m_objectID(objectID)
+        m_objectID(objectID),
+        m_nestedObjects(nestedObjects)
     {
 
     }
 
-	SceneObject::SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID) :
+	SceneObject::SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID, std::vector<SceneObject*> nestedObjects) :
         m_position(objectPosition),
         m_size(objectSize),
-        m_objectID(objectID)
+        m_objectID(objectID),
+        m_nestedObjects(nestedObjects)
 	{
 
 	}
@@ -26,7 +28,10 @@ namespace Engine
 
     void SceneObject::update(float deltaTime)
     {
-
+        for (SceneObject* nestedObject : m_nestedObjects)
+        {
+            nestedObject->update(deltaTime);
+        }
     }
 
     bool SceneObject::GetVisible()

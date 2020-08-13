@@ -22,7 +22,7 @@ namespace SceneSystem
 		SceneManager(const SceneManager& SceneManager) = delete;
 		~SceneManager();
 
-		void Update();
+		void Update(float dt);
 		void SwitchScene(Scene* newScene);
 		void SwitchScene(std::string newScene);
 		void ReceiveKeyInput(System::Key Key) override;

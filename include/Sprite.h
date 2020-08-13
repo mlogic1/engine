@@ -20,7 +20,7 @@ namespace Engine
 	{
 
 	public:
-		Sprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID);
+		Sprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID, std::vector<SceneObject*> nestedObjects = {});
 		~Sprite();
 
 		/***************************************

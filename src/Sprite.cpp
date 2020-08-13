@@ -19,8 +19,8 @@ namespace Engine
 	 * public methods
 	***************************************/
 
-	Sprite::Sprite(std::string objectID, Shader *spriteShader, Rect spriteRect, GLuint textureID) :
-		SceneObject(spriteRect, objectID),
+	Sprite::Sprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID, std::vector<SceneObject*> nestedObjects) :
+		SceneObject(spriteRect, objectID, nestedObjects),
 		m_texture(textureID)
 	{
 		this->m_spriteShader = spriteShader;
@@ -85,8 +85,13 @@ namespace Engine
 		glUseProgram(this->m_spriteShader->getShaderID());
 		glBindVertexArray(this->VAO);
 		glBindTexture(GL_TEXTURE_2D, this->m_texture);
-
+		
 		glDrawElements(this->GL_DRAW_MODE, 6, GL_UNSIGNED_INT, 0);
+		
+		for (SceneObject* nestedObject : m_nestedObjects)
+		{
+			nestedObject->render();
+		}
 	}
 
 	void Sprite::SetTexture(GLuint textureID)

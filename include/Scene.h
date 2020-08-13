@@ -29,7 +29,7 @@ namespace SceneSystem
 		Scene(const std::string& SceneName, const std::string& sceneFileName);
 		virtual ~Scene();
 
-		void Update();
+		void Update(float dt);
 		void Render();
 		virtual void ReceiveKeyInput(System::Key Key) override;
 		void InstantiateSprite(Engine::Sprite* sprite);

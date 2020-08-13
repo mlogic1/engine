@@ -47,7 +47,7 @@ namespace System
 		deltaTimeAccumulated += m_deltaTime;
 		lastFrame = currentFrame;
 		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
-		m_sceneManager->Update();
+		m_sceneManager->Update(m_deltaTime);
 
 		glfwSwapBuffers(m_gameWindow);
 		glfwPollEvents();

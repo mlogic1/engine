@@ -10,6 +10,7 @@
 #include "Rect.h"
 #include <glad/glad.h>
 #include <string>
+#include <vector>
 
 namespace Engine
 {
@@ -17,11 +18,27 @@ namespace Engine
     class Sprite;
     class TextObject;
 
+    struct SpriteData
+    {
+        std::string id;
+        Rect rect;
+        GLuint texture;
+        std::vector<SpriteData> nestedObjects;
+    };
+
+    struct TextObjectData
+    {
+        std::string id;
+        Rect rect;
+        std::string text;
+        std::vector<TextObjectData> nestedObjects;
+    };
+
 	class SceneObjectFactory final
 	{
 	public:
-        static SceneObject* CreateSprite(std::string objectID, Rect spriteRect, GLuint textureID);
-        static SceneObject* CreateTextObject(std::string objectID, Rect objectRect, std::string text = "");
+        static SceneObject* CreateSprite(SpriteData spriteData);
+        static SceneObject* CreateTextObject(std::string objectID, Rect objectRect, std::vector<SceneObject*> nestedObjects, std::string text = "");
 	};
 }
 

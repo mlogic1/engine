@@ -19,8 +19,8 @@ namespace Engine
 	class SceneObject : public GameObject, public IIdentifiable
 	{
 		public:
-			SceneObject(Rect objectRect, std::string objectID);
-			SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID);
+			SceneObject(Rect objectRect, std::string objectID, std::vector<SceneObject*> nestedObjects);
+			SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID, std::vector<SceneObject*> nestedObjects);
 			~SceneObject();
 
 			/***************************************

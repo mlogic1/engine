@@ -18,12 +18,12 @@ namespace SceneSystem
 	{
 	}
 
-	void Scene::Update()
+	void Scene::Update(float dt)
 	{
-		this->m_gameCamera->update(0.016f);
+		this->m_gameCamera->update(dt);
 		for (Engine::SceneObject* object : m_sceneObjects)
 		{
-			object->update(0.0016);
+			object->update(dt);
 		}
 		UpdateScene();
 	}
@@ -53,12 +53,16 @@ namespace SceneSystem
 
 	void Scene::InstantiateSprite(std::string objectID, Rect rect, const GLuint& textureID)
 	{
-		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateSprite(objectID, rect, textureID));
+		Engine::SpriteData spriteData;
+		spriteData.id = objectID;
+		spriteData.rect = rect;
+		spriteData.texture = textureID;
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateSprite(spriteData));
 	}
 
 	void Scene::InstantiateFontObject(std::string objectID, Rect fontRect, std::string text)
 	{
-		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(objectID, fontRect, text));
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(objectID, fontRect, std::vector<Engine::SceneObject*>(), text));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)
