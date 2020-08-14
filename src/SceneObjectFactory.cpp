@@ -13,7 +13,14 @@ namespace Engine
         
         SceneObject* baseObject = new Sprite(spriteData.id, spriteShader, spriteData.rect, spriteData.texture);
         std::vector<SceneObject*> nestedObjects;
-        // TODO nested objects
+
+        for (int i = 0; i < spriteData.nestedObjects.size(); ++i)
+        {
+            SpriteData nestedObjectData = spriteData.nestedObjects[i];
+            SceneObject* nestedObject = CreateSprite(nestedObjectData);
+            baseObject->AddNestedObject(nestedObject);
+        }
+
         return baseObject;
     }
 

@@ -26,10 +26,7 @@ namespace Engine
                 if (objectType == TYPE_SPRITE)
                 {
                     SpriteData spriteData = ParseSprite(data.value());
-                    
-                    std::vector<SceneObject*> nestedObjects;
                     SceneObject* object = SceneObjectFactory::CreateSprite(spriteData);
-                    
                     sceneObjects.push_back(object);
                 }
                 else if (objectType == TYPE_TEXT_OBJECT)

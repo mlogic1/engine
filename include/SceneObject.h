@@ -19,8 +19,8 @@ namespace Engine
 	class SceneObject : public GameObject, public IIdentifiable
 	{
 		public:
-			SceneObject(Rect objectRect, std::string objectID, std::vector<SceneObject*> nestedObjects);
-			SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID, std::vector<SceneObject*> nestedObjects);
+			SceneObject(Rect objectRect, std::string objectID, std::vector<SceneObject*> nestedObjects, SceneObject* parent = nullptr);
+			SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID, std::vector<SceneObject*> nestedObjects, SceneObject* parent = nullptr);
 			~SceneObject();
 
 			/***************************************
@@ -58,6 +58,7 @@ namespace Engine
 			// TODO angle
 			// TODO destination
 
+			SceneObject* m_parent = nullptr;
 			std::vector<SceneObject*> m_nestedObjects;
 	};
 }
