@@ -21,11 +21,41 @@ public:
 		this->y = y;
 	}
 
-	Vector2(const T &vector)
+	Vector2(const T& vector)
 	{
 		this->x = static_cast<T>(vector.x);
 		this->y = static_cast<T>(vector.y);
 	}
+
+    Vector2<T> operator+(const Vector2<T>& other) const
+    {
+        Vector2<T> result(this->x, this->y);
+        result.x += other.x;
+        result.y += other.y;
+        return result;
+    }
+
+    Vector2<T>& operator+=(const Vector2<T>& other)
+    {
+        this->x += other.x;
+        this->y += other.y;
+        return (*this);
+    }
+
+    Vector2<T> operator-(const Vector2<T>& other) const
+    {
+        Vector2<T> result(this->x, this->y);
+        result.x -= other.x;
+        result.y -= other.y;
+        return result;
+    }
+
+    Vector2<T>& operator-=(const Vector2<T>& other)
+    {
+        this->x -= other.x;
+        this->y -= other.y;
+        return (*this);
+    }
 
 	~Vector2()
 	{
