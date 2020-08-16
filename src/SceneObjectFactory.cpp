@@ -10,9 +10,8 @@ namespace Engine
     SceneObject* SceneObjectFactory::CreateSprite(SpriteData spriteData)
     {
         Shader* spriteShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("OrthoShader");
-        
+
         SceneObject* baseObject = new Sprite(spriteData.id, spriteShader, spriteData.rect, spriteData.texture);
-        std::vector<SceneObject*> nestedObjects;
 
         for (int i = 0; i < spriteData.nestedObjects.size(); ++i)
         {

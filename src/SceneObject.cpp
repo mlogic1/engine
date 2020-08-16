@@ -46,6 +46,19 @@ namespace Engine
         return m_position;
     }
 
+    Vector2f SceneObject::GetWorldPosition() const
+    {
+        Vector2f worldPosition = m_position;
+        SceneObject* parent = GetParent();
+        while (parent != nullptr)
+        {
+            worldPosition = worldPosition + parent->GetPosition();
+            parent = parent->GetParent();
+        }
+
+        return worldPosition;
+    }
+
     Vector2f SceneObject::GetSize()
     {
         return m_size;
@@ -54,6 +67,11 @@ namespace Engine
     std::string SceneObject::GetID() const
     {
         return m_objectID;
+    }
+
+    SceneObject* SceneObject::GetParent() const
+    {
+        return m_parent;
     }
 
     void SceneObject::SetVisible(bool visibleState)

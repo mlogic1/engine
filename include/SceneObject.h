@@ -34,8 +34,10 @@ namespace Engine
 			***************************************/
 			virtual bool GetVisible();
 			Vector2f GetPosition();
+			Vector2f GetWorldPosition() const;
 			Vector2f GetSize();
 			std::string GetID() const override;
+			SceneObject* GetParent() const;
 
 			virtual void SetVisible(bool visibleState);
 			void SetPosition(Vector2f position);
