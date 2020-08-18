@@ -81,9 +81,6 @@ namespace SceneSystem
         {
             throw std::string("Attemping to switch to non existing scene: " + newScene);
         }
-
-
-
 	}
 
 	void SceneManager::ReceiveKeyInput(System::Key Key)

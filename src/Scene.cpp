@@ -72,6 +72,7 @@ namespace SceneSystem
 
 	Engine::SceneObject* Scene::GetSceneObject(const std::string& id)
 	{
+		// TODO look in nested objects
         for (Engine::SceneObject* object : m_sceneObjects)
         {
             if (object->GetID() == id)

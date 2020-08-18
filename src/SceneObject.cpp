@@ -1,5 +1,6 @@
 #include "SceneObject.h"
 #include "Constants.h"
+#include "Log.h"
 
 namespace Engine
 {
@@ -102,13 +103,15 @@ namespace Engine
 
     void SceneObject::GetNormalizedCoordinates(float(&arr)[20])
     {
+        Vector2f worldPosition = GetWorldPosition();
+        
         float normX, normY;
-        normX = (m_position.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
-        normY = (m_position.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
+        normX = (worldPosition.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
+        normY = (worldPosition.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
 
         float normW, normH;
-        normW = (m_position.x + m_size.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
-        normH = (m_position.y + m_size.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
+        normW = (worldPosition.x + m_size.x - VIRTUAL_RESOLUTION_WIDTH / 2.0f) / (VIRTUAL_RESOLUTION_WIDTH / 2.0f);
+        normH = (worldPosition.y + m_size.y - VIRTUAL_RESOLUTION_HEIGHT / 2.0f) / (VIRTUAL_RESOLUTION_HEIGHT / 2.0f);
 
         float tlX = normX, tlY = normY * -1.0f;
         float trX = normW, trY = normY * -1.0f;
