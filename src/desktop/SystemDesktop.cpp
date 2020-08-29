@@ -53,7 +53,7 @@ namespace System
 		glfwPollEvents();
 
 		++frameCounter;
-		if (deltaTimeAccumulated > 1.0f)
+		if (deltaTimeAccumulated > 0.01f)
 		{
 			m_FPS = frameCounter / deltaTimeAccumulated;
 			frameCounter = 0;
