@@ -43,6 +43,12 @@ namespace Engine
                     std::vector<SceneObject*> nestedObjects;
                     sceneObjects.push_back(SceneObjectFactory::CreateTextObject(id, objectRect, nestedObjects, text));
                 }
+                else if (objectType == TYPE_ANIMATED_SPRITE)
+                {
+                    AnimatedSpriteData spriteData = ParseAnimatedSprite(data.value());
+                    SceneObject* object = SceneObjectFactory::CreateAnimatedSprite(spriteData);
+                    sceneObjects.push_back(object);
+                }
                 else
                 {
                     Log::Write("Unsupported object type in scene: " + objectType, Log::ERR);
@@ -76,7 +82,6 @@ namespace Engine
         objectData.id = id;
         objectData.texture = textureID;
         objectData.rect = spriteRect;
-        
 
         bool containsNested = data.contains("nested_objects");
         
@@ -85,6 +90,43 @@ namespace Engine
             for (auto nestedData : data["nested_objects"])
             {
                 objectData.nestedObjects.push_back(ParseSprite(nestedData));
+            }
+        }
+
+        return objectData;
+    }
+
+    AnimatedSpriteData SceneLoader::ParseAnimatedSprite(nlohmann::json data)
+    {
+        AnimatedSpriteData objectData;
+
+        std::string id = data["id"];
+        std::string textureIDStr = data["texture"];
+        GLuint textureID = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureIDStr);
+
+        Rect spriteRect;
+        spriteRect.x = data["rect"]["x"];
+        spriteRect.y = data["rect"]["y"];
+        spriteRect.w = data["rect"]["w"];
+        spriteRect.h = data["rect"]["h"];
+
+        objectData.id = id;
+        objectData.texture = textureID;
+        objectData.rect = spriteRect;
+        objectData.frameCount = data["frame_count"];
+        objectData.frameTime = data["frame_time"];
+        objectData.frameWidth = data["frame_width"];
+        objectData.frameHeight = data["frame_height"];
+        objectData.textureCols = data["frame_cols"];
+        objectData.textureRows = data["frame_rows"];
+
+        bool containsNested = data.contains("nested_objects");
+
+        if (containsNested)
+        {
+            for (auto nestedData : data["nested_objects"])
+            {
+                objectData.nestedObjects.push_back(ParseAnimatedSprite(nestedData));
             }
         }
 

@@ -16,6 +16,7 @@ namespace Engine
 {
     class SceneObject;
     class Sprite;
+    class AnimatedSprite;
     class TextObject;
 
     struct SpriteData
@@ -24,6 +25,20 @@ namespace Engine
         Rect rect;
         GLuint texture;
         std::vector<SpriteData> nestedObjects;
+    };
+
+    struct AnimatedSpriteData
+    {
+        std::string id;
+        Rect rect;
+        GLuint texture;
+        int frameCount;
+        float frameTime;
+        int frameWidth;
+        int frameHeight;
+        int textureRows;
+        int textureCols;
+        std::vector<AnimatedSpriteData> nestedObjects;
     };
 
     struct TextObjectData
@@ -38,6 +53,7 @@ namespace Engine
 	{
 	public:
         static SceneObject* CreateSprite(SpriteData spriteData);
+        static SceneObject* CreateAnimatedSprite(AnimatedSpriteData spriteData);
         static SceneObject* CreateTextObject(std::string objectID, Rect objectRect, std::vector<SceneObject*> nestedObjects, std::string text = "");
 	};
 }

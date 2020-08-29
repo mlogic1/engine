@@ -231,6 +231,36 @@ namespace System
 			if (key == GLFW_KEY_D)
 				SYSTEM_PTR->ReceiveKeyInput(Key::D);
 			
+			if (key == GLFW_KEY_0)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num0);
+
+			if (key == GLFW_KEY_1)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num1);
+
+			if (key == GLFW_KEY_2)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num2);
+
+			if (key == GLFW_KEY_3)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num3);
+
+			if (key == GLFW_KEY_4)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num4);
+
+			if (key == GLFW_KEY_5)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num5);
+
+			if (key == GLFW_KEY_6)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num6);
+
+			if (key == GLFW_KEY_7)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num7);
+
+			if (key == GLFW_KEY_8)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num8);
+
+			if (key == GLFW_KEY_9)
+				SYSTEM_PTR->ReceiveKeyInput(Key::Num9);
+
 		}
 
 		if (action == GLFW_RELEASE)

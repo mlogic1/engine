@@ -47,7 +47,7 @@ namespace Engine
 			const std::vector<SceneObject*>& GetNestedObjects();
 
         protected:
-			void GetNormalizedCoordinates(float(&arr)[20]);
+			virtual void GetNormalizedCoordinates(float(&arr)[20]);
 
 		protected:
 			// properties

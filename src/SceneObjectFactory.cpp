@@ -2,6 +2,7 @@
 #include "SceneObject.h"
 #include "Shader.h"
 #include "Sprite.h"
+#include "AnimatedSprite.h"
 #include "TextObject.h"
 #include "SystemBase.h"
 
@@ -17,6 +18,22 @@ namespace Engine
         {
             SpriteData nestedObjectData = spriteData.nestedObjects[i];
             SceneObject* nestedObject = CreateSprite(nestedObjectData);
+            baseObject->AddNestedObject(nestedObject);
+        }
+
+        return baseObject;
+    }
+
+    SceneObject* SceneObjectFactory::CreateAnimatedSprite(AnimatedSpriteData spriteData)
+    {
+        Shader* spriteShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("OrthoShader");
+
+        SceneObject* baseObject = new AnimatedSprite(spriteData.id, spriteShader, spriteData.rect, spriteData.texture, spriteData.frameCount, spriteData.frameTime, spriteData.frameWidth, spriteData.frameHeight, spriteData.textureRows, spriteData.textureCols);
+
+        for (int i = 0; i < spriteData.nestedObjects.size(); ++i)
+        {
+            AnimatedSpriteData nestedObjectData = spriteData.nestedObjects[i];
+            SceneObject* nestedObject = CreateAnimatedSprite(nestedObjectData);
             baseObject->AddNestedObject(nestedObject);
         }
 
