@@ -34,8 +34,14 @@ namespace Engine
 		/***************************************
 		 * textures
 		***************************************/
-		void SetTexture(GLuint textureFileName);
+		void SetTexture(GLuint textureFileName, int frameCount, float frameTime, int frameWidth, int frameHeight, int textureRows, int textureCols);
 		GLuint GetTexture();
+		void PauseSpriteAnimation();
+		void ResumeSpriteAnimation();
+		void ResetSpriteAnimation();
+
+	protected:
+		void SetupTextureAtlas();
 
 	protected:
 		// texture
@@ -45,10 +51,11 @@ namespace Engine
 		int m_frameCount;
 		float m_frameTime;
 		float m_currentFrameTime = 0;
-		const int m_frameWidth;
-		const int m_frameHeight;
-		const int m_spriteSheetRows;
-		const int m_spriteSheetCols;
+		int m_frameWidth;
+		int m_frameHeight;
+		int m_spriteSheetRows;
+		int m_spriteSheetCols;
+		bool m_isAnimationRunning = true;
 
 	private:
 		/***************************************

@@ -11,6 +11,7 @@ namespace Engine
 
 	AnimatedSprite::AnimatedSprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID, int frameCount, float frameTime, int frameWidth, int frameHeight, int textureRows, int textureCols, std::vector<SceneObject*> nestedObjects) :
 		SceneObject(spriteRect, objectID, nestedObjects),
+		m_spriteShader(spriteShader),
 		m_texture(textureID),
 		m_frameCount(frameCount),
 		m_frameTime(frameTime),
@@ -19,53 +20,9 @@ namespace Engine
 		m_spriteSheetRows(textureRows),
 		m_spriteSheetCols(textureCols)
 	{
-		this->m_spriteShader = spriteShader;
 		Log::Write("Instantiating animated sprite");
-
-		int spriteSheetWidth = m_spriteSheetCols * m_frameWidth;
-		int spriteSheetHeight = m_spriteSheetRows * m_frameHeight;
-
-		// atlas setup
-		int currentFrame = 0;
-		for (int i = 0; i < m_spriteSheetRows; ++i)
-		{
-			for (int j = 0; j < m_spriteSheetCols; ++j)
-			{
-				int frameX = j * m_frameWidth;
-				int frameY = i * m_frameHeight;
-
-				float tlX = frameX / (float)spriteSheetWidth;
-				float tlY = frameY / (float)spriteSheetHeight;
-				float trX = (frameX + m_frameWidth) / (float)spriteSheetWidth;
-				float trY = (frameY) / (float)spriteSheetHeight;
-				float blX = frameX / (float)spriteSheetWidth;
-				float blY = (frameY + m_frameHeight) / (float)spriteSheetHeight;
-				float brX = (frameX + m_frameWidth) / (float)spriteSheetWidth;
-				float brY = (frameY + m_frameHeight) / (float)spriteSheetHeight;
-
-				// flip Y norm
-				tlY = 1.0f - tlY;
-				trY = 1.0f - trY;
-				blY = 1.0f - blY;
-				brY = 1.0f - brY;
-
-				std::array<float, 8> normTexels = 
-				{
-					trX, trY,
-					brX, brY,
-					blX, blY,
-					tlX, tlY
-				};
-
-				m_textureAtlas.emplace(currentFrame, normTexels);
-				++currentFrame;
-				if (currentFrame == m_frameCount) 
-				{
-					break;
-				}
-			}
-		}
-
+		SetupTextureAtlas();
+		
 		m_spriteShader->useShader();
 		glUniform1i(glGetUniformLocation(this->m_spriteShader->getShaderID(), "sprite_texture"), 0);
 
@@ -104,6 +61,52 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
+	void AnimatedSprite::SetupTextureAtlas()
+	{
+		int spriteSheetWidth = m_spriteSheetCols * m_frameWidth;
+		int spriteSheetHeight = m_spriteSheetRows * m_frameHeight;
+
+		int currentFrame = 0;
+		for (int i = 0; i < m_spriteSheetRows; ++i)
+		{
+			for (int j = 0; j < m_spriteSheetCols; ++j)
+			{
+				int frameX = j * m_frameWidth;
+				int frameY = i * m_frameHeight;
+
+				float tlX = frameX / (float)spriteSheetWidth;
+				float tlY = frameY / (float)spriteSheetHeight;
+				float trX = (frameX + m_frameWidth) / (float)spriteSheetWidth;
+				float trY = (frameY) / (float)spriteSheetHeight;
+				float blX = frameX / (float)spriteSheetWidth;
+				float blY = (frameY + m_frameHeight) / (float)spriteSheetHeight;
+				float brX = (frameX + m_frameWidth) / (float)spriteSheetWidth;
+				float brY = (frameY + m_frameHeight) / (float)spriteSheetHeight;
+
+				// flip Y norm
+				tlY = 1.0f - tlY;
+				trY = 1.0f - trY;
+				blY = 1.0f - blY;
+				brY = 1.0f - brY;
+
+				std::array<float, 8> normTexels =
+				{
+					trX, trY,
+					brX, brY,
+					blX, blY,
+					tlX, tlY
+				};
+
+				m_textureAtlas.emplace(currentFrame, normTexels);
+				++currentFrame;
+				if (currentFrame == m_frameCount)
+				{
+					break;
+				}
+			}
+		}
+	}
+
 	AnimatedSprite::~AnimatedSprite()
 	{
 	}
@@ -115,15 +118,18 @@ namespace Engine
 		float vertices[20];
 		GetNormalizedCoordinates(vertices);
 
-		m_currentFrameTime += deltaTime;
-
-		if (m_currentFrameTime >= m_frameTime)
+		if (m_isAnimationRunning)
 		{
-			m_currentFrameTime = .0f;
-			++m_currentFrameIndex;
-			if (m_currentFrameIndex >= m_frameCount)
+			m_currentFrameTime += deltaTime;
+
+			if (m_currentFrameTime >= m_frameTime)
 			{
-				m_currentFrameIndex = 0;
+				m_currentFrameTime = .0f;
+				++m_currentFrameIndex;
+				if (m_currentFrameIndex >= m_frameCount)
+				{
+					m_currentFrameIndex = 0;
+				}
 			}
 		}
 
@@ -158,13 +164,35 @@ namespace Engine
 		}
 	}
 
-	void AnimatedSprite::SetTexture(GLuint textureID)
+	void AnimatedSprite::SetTexture(GLuint textureID, int frameCount, float frameTime, int frameWidth, int frameHeight, int textureRows, int textureCols)
 	{
 		m_texture = textureID;
+		m_frameCount = frameCount;
+		m_frameTime = frameTime;
+		m_frameWidth = frameWidth;
+		m_frameHeight = frameHeight;
+		m_spriteSheetRows = textureRows;
+		m_spriteSheetCols = textureCols;
+		SetupTextureAtlas();
 	}
 
 	GLuint AnimatedSprite::GetTexture()
 	{
 		return m_texture;
+	}
+	
+	void AnimatedSprite::PauseSpriteAnimation()
+	{
+		m_isAnimationRunning = false;
+	}
+	
+	void AnimatedSprite::ResumeSpriteAnimation()
+	{
+		m_isAnimationRunning = true;
+	}
+	
+	void AnimatedSprite::ResetSpriteAnimation()
+	{
+		m_currentFrameIndex = 0;
 	}
 }
