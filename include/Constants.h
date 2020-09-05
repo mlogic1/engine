@@ -21,6 +21,7 @@
         #define PATH_SHADERS "shaders/"
         #define PATH_TEXTURES "textures/"
         #define PATH_FONTS "fonts/"
+        #define PATH_SCENES "scenes/"
     #else
         #define PATH_ASSETS "assets/"
         #define PATH_SHADERS PATH_ASSETS "shaders/"

@@ -26,8 +26,8 @@ namespace Engine
 			/***************************************
 			 * inherited methods
 			***************************************/
-			virtual void update(float deltaTime);
-			virtual void render() = 0;
+			virtual void update(float deltaTime) override;
+			virtual void render() override = 0;
 
 			/***************************************
 			 * properties

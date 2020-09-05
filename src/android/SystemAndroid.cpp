@@ -38,7 +38,8 @@ namespace System
 
 	void SystemAndroid::Update()
 	{
-		m_sceneManager.Update();
+        float dt = 0.0016f;
+		m_sceneManager->Update(dt);
 	}
 
 	bool SystemAndroid::LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const
