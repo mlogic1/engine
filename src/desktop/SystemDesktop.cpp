@@ -46,7 +46,7 @@ namespace System
 		m_deltaTime = currentFrame - lastFrame;
 		deltaTimeAccumulated += m_deltaTime;
 		lastFrame = currentFrame;
-		glfwGetCursorPos(m_gameWindow, &m_mousePosition.x, &m_mousePosition.y);
+		UpdateCursorPosition();
 		m_sceneManager->Update(m_deltaTime);
 
 		glfwSwapBuffers(m_gameWindow);
@@ -64,6 +64,13 @@ namespace System
 	bool SystemDesktop::IsRunning()
 	{
 		return !glfwWindowShouldClose(m_gameWindow);
+	}
+
+	Vector2i SystemDesktop::GetWindowDimensions() const
+	{
+		int width, height;
+		glfwGetWindowSize(m_gameWindow, &width, &height);
+		return Vector2i(width, height);
 	}
 
 	bool SystemDesktop::LoadBinaryDataFromAssets(const std::string fileName, unsigned char *& data, off_t & length) const
@@ -126,6 +133,21 @@ namespace System
 		return true;
 	}
 
+	KeyState SystemDesktop::GetKeyState(const Key& key)
+	{
+		if (key == Key::CURSOR)
+		{
+			int state = glfwGetMouseButton(m_gameWindow, GLFW_MOUSE_BUTTON_LEFT);
+
+			if (state == GLFW_PRESS)
+			{
+				return KeyState::PRESSED;
+			}
+		}
+
+		return KeyState::RELEASED;
+	}
+
 	GLFWwindow * SystemDesktop::InitWindow()
 	{
 #ifdef __APPLE__
@@ -142,6 +164,7 @@ namespace System
 		glfwMakeContextCurrent(window);
 		glfwSetFramebufferSizeCallback(window, OnWindowResized);
 		glfwSetKeyCallback(window, OnKey);
+		glfwSetMouseButtonCallback(window, OnKeyMouse);
 		return window;
 	}
 
@@ -156,6 +179,29 @@ namespace System
 		{
 			return true;
 		}
+	}
+
+	void SystemDesktop::UpdateCursorPosition()
+	{
+		double x, y;
+		int windowWidth, windowHeight;
+		glfwGetWindowSize(m_gameWindow, &windowWidth, &windowHeight);
+		glfwGetCursorPos(m_gameWindow, &x, &y);
+		
+		// normalize mouse between viewport
+		float normX = (x) / (windowWidth);
+		float normY = (y) / (windowHeight);
+
+		float normalizedX = normX * VIRTUAL_RESOLUTION_WIDTH;
+		float normalizedY = normY * VIRTUAL_RESOLUTION_HEIGHT;
+
+		// BUG: If render mode is LetterBox and window was resized, mouse coordinates will be in window dimension instead of viewport dimensions
+		// TODO: fix this by normalizing between viewport instead of virtual resolution
+		// int viewport[4];
+		// glGetIntegerv(GL_VIEWPORT, viewport);
+
+		// set cursor position in virtual resolution corrdinates
+		m_cursorPosition.Set(normalizedX, normalizedY);
 	}
 
 	void OnWindowResized(GLFWwindow * window, int width, int height)
@@ -262,6 +308,24 @@ namespace System
 				SYSTEM_PTR->ReceiveKeyInput(Key::Num9);
 
 		}
+
+		if (action == GLFW_RELEASE)
+		{
+			Log::Write("Key Released: " + std::to_string(key));
+		}
+	}
+
+	void OnKeyMouse(GLFWwindow* window, int key, int action, int mods)
+	{
+		if (action == GLFW_PRESS)
+		{
+			Log::Write("Key Pressed: " + std::to_string(key));
+
+			if (key == GLFW_MOUSE_BUTTON_LEFT)
+			{
+				SYSTEM_PTR->ReceiveKeyInput(Key::CURSOR);
+			}
+		}	
 
 		if (action == GLFW_RELEASE)
 		{

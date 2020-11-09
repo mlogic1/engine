@@ -46,4 +46,20 @@ namespace Engine
         Shader* fontShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("FontShader");
 		return new TextObject(objectID, fontShader, objectRect, System::SYSTEM_PTR->GetFontManager()->GetSupportedCharacters(), nestedObjects, text);
     }
+    
+    SceneObject* SceneObjectFactory::CreateButton(ButtonObjectData buttonData)
+    {
+        Shader* buttonShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("OrthoShader");
+        
+        SceneObject* baseObject = new Button(buttonData.id, buttonShader, buttonData.rect, buttonData.textureMap, System::SYSTEM_PTR->GetCursorPosition());
+
+        for (int i = 0; i < buttonData.nestedObjects.size(); ++i)
+        {
+            ButtonObjectData nestedObjectData = buttonData.nestedObjects[i];
+            SceneObject* nestedObject = CreateButton(nestedObjectData);
+            baseObject->AddNestedObject(nestedObject);
+        }
+
+        return baseObject;
+    }
 }

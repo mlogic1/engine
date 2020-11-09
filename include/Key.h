@@ -33,7 +33,8 @@ namespace System
 		NumPad8,
 		NumPad9,
 		ANDROID_BACK,
-		ANDROID_HOME
+		ANDROID_HOME,
+		CURSOR
 	};
 }
 

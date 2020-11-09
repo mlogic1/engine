@@ -2,7 +2,7 @@
 
 #include "Log.h"
 
-namespace EventSystem
+namespace Engine
 {
     EventManager* EventManager::EVENT_MANAGER = nullptr;
 

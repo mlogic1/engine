@@ -49,6 +49,12 @@ namespace Engine
                     SceneObject* object = SceneObjectFactory::CreateAnimatedSprite(spriteData);
                     sceneObjects.push_back(object);
                 }
+                else if (objectType == TYPE_BUTTON)
+                {
+                    ButtonObjectData buttonData = ParseButtonObject(data.value());
+                    SceneObject* object = SceneObjectFactory::CreateButton(buttonData);
+                    sceneObjects.push_back(object);
+                }
                 else
                 {
                     Log::Write("Unsupported object type in scene: " + objectType, Log::ERR);
@@ -89,7 +95,7 @@ namespace Engine
         {
             for (auto nestedData : data["nested_objects"])
             {
-                objectData.nestedObjects.push_back(ParseSprite(nestedData));
+                objectData.nestedObjects.push_back(ParseSprite(nestedData));    // wrong
             }
         }
 
@@ -126,7 +132,7 @@ namespace Engine
         {
             for (auto nestedData : data["nested_objects"])
             {
-                objectData.nestedObjects.push_back(ParseAnimatedSprite(nestedData));
+                objectData.nestedObjects.push_back(ParseAnimatedSprite(nestedData));    // wrong
             }
         }
 
@@ -136,5 +142,53 @@ namespace Engine
     TextObjectData SceneLoader::ParseTextObject(nlohmann::json data)
     {
         return TextObjectData();
+    }
+
+    ButtonObjectData SceneLoader::ParseButtonObject(nlohmann::json data)
+    {
+        ButtonObjectData buttonData;
+        
+        std::string id = data["id"];
+        const std::string textureStrIdle = data["texture_idle"];
+        const std::string textureStrHover = data["texture_hover"];
+        const std::string textureStrPressed = data["texture_pressed"];
+        const std::string textureStrDisabled = data["texture_disabled"];
+
+        GLuint textureIDIdle = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrIdle);
+        GLuint textureIDHover = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrHover);
+        GLuint textureIDPressed = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrPressed);
+        GLuint textureIDDisabled = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrDisabled);
+
+        Rect buttonRect;
+        buttonRect.x = data["rect"]["x"];
+        buttonRect.y = data["rect"]["y"];
+        buttonRect.w = data["rect"]["w"];
+        buttonRect.h = data["rect"]["h"];
+
+        buttonData.id = id;
+        buttonData.rect = buttonRect;
+        buttonData.textureMap.emplace(ButtonState::IDLE, textureIDIdle);
+        buttonData.textureMap.emplace(ButtonState::HOVER, textureIDHover);
+        buttonData.textureMap.emplace(ButtonState::PRESSED, textureIDPressed);
+        buttonData.textureMap.emplace(ButtonState::DISABLED, textureIDDisabled);
+
+        bool hasText = data.contains("text");
+
+        if (hasText)
+        {
+            buttonData.text = data["text"];
+        }
+
+        bool containsNested = data.contains("nested_objects");
+
+        if (containsNested)
+        {
+            for (auto nestedData : data["nested_objects"])
+            {
+                buttonData.nestedObjects.push_back(ParseButtonObject(nestedData)); // wrong
+            }
+        }
+        
+        return buttonData;
     }
 }

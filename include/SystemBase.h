@@ -4,6 +4,8 @@
 #include "IInputReceiver.h"
 #include "SceneManager.h"
 #include "FontManager.h"
+#include "Key.h"
+#include "KeyState.h"
 #include "TextureManager.h"
 #include "ShaderManager.h"
 #include "Vector2.h"
@@ -17,7 +19,7 @@ namespace System
 		ANDROID
 	};*/
 
-	enum GLRenderMode
+	enum class GLRenderMode
 	{
 		LetterBox = 0,
 		Virtual4By3 = 1,
@@ -38,9 +40,13 @@ namespace System
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
 		void ReceiveKeyInput(Key key) override;
+		virtual KeyState GetKeyState(const Key& key) = 0;
+
 		// TODO getsystemtype
 		float GetDeltaTime() const;
 		float GetFPS() const;
+		virtual Vector2i GetWindowDimensions() const  = 0;
+		const Vector2f& GetCursorPosition() const;
 
 		SceneSystem::SceneManager* m_sceneManager;	// TODO move to proctected part
 
@@ -62,9 +68,8 @@ namespace System
 		float m_deltaTime = -1.0f;
 		float m_FPS = -1.0f;
 
-	private:
 		// cursor
-		Vector2f m_cursorPosition{-1.0f, -1.0f};
+		Vector2f m_cursorPosition{ -1.0f, -1.0f };
 	};
 
 	extern SystemBase* SYSTEM_PTR;

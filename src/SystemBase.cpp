@@ -44,6 +44,11 @@ namespace System
         return m_FPS;
     }
 
+	const Vector2f& SystemBase::GetCursorPosition() const
+	{
+		return m_cursorPosition;
+	}
+
 	const Engine::ShaderManager* SystemBase::GetShaderManager() const
 	{
 		return m_shaderManager;

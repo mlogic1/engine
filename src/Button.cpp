@@ -1,17 +1,7 @@
-//
-//  Sprite.cpp
-//  gl-tris
-//
-//  Created by mlogic1 on 29/12/2018.
-//
-
-#include "Sprite.h"
+#include "Button.h"
 #include "SystemBase.h"
 #include "Log.h"
 #include "Constants.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
 namespace Engine
 {
@@ -19,15 +9,17 @@ namespace Engine
 	 * public methods
 	***************************************/
 
-	Sprite::Sprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID, std::vector<SceneObject*> nestedObjects) :
-		SceneObject(spriteRect, objectID, nestedObjects),
-		m_texture(textureID)
+	Button::Button(std::string objectID, Shader* ButtonShader, Rect ButtonRect, std::map<ButtonState, GLuint> textureMap, const Vector2f& cursorPosition, std::vector<SceneObject*> nestedObjects) :
+		SceneObject(ButtonRect, objectID, nestedObjects),
+		m_textureMap(textureMap),
+		m_currentButtonState(ButtonState::IDLE),
+		m_cursorPosition(cursorPosition)
 	{
-		this->m_spriteShader = spriteShader;
-		Log::Write("Instantiating sprite");
+		this->m_buttonShader = ButtonShader;
+		Log::Write("Instantiating Button");
 
-		m_spriteShader->useShader();
-		glUniform1i(glGetUniformLocation(this->m_spriteShader->getShaderID(), "sprite_texture"), 0);
+		m_buttonShader->useShader();
+		glUniform1i(glGetUniformLocation(this->m_buttonShader->getShaderID(), "sprite_texture"), 0);
 
 		if (glGenVertexArrays == NULL)
 		{
@@ -64,11 +56,11 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
-	Sprite::~Sprite()
+	Button::~Button()
 	{
 	}
 
-	void Sprite::update(float deltaTime)
+	void Button::update(float deltaTime)
 	{
 		SceneObject::update(deltaTime);
 
@@ -78,13 +70,32 @@ namespace Engine
 		glBindVertexArray(this->VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, 20 * sizeof(float), &vertices);
+
+		const Vector2f worldPosition = GetWorldPosition();
+		if (m_cursorPosition.x >= worldPosition.x && m_cursorPosition.y >= worldPosition.y && m_cursorPosition.x <= worldPosition.x + m_size.x && m_cursorPosition.y <= worldPosition.y + m_size.y)
+		{
+			// mouse inside button
+			const System::KeyState keyState = System::SYSTEM_PTR->GetKeyState(System::Key::CURSOR);
+			if (keyState == System::KeyState::PRESSED)
+			{
+				m_currentButtonState = ButtonState::PRESSED;
+			}
+			else
+			{
+				m_currentButtonState = ButtonState::HOVER;
+			}
+		}
+		else
+		{
+			m_currentButtonState = ButtonState::IDLE;
+		}
 	}
 
-	void Sprite::render()
+	void Button::render()
 	{
-		glUseProgram(this->m_spriteShader->getShaderID());
+		glUseProgram(this->m_buttonShader->getShaderID());
 		glBindVertexArray(this->VAO);
-		glBindTexture(GL_TEXTURE_2D, this->m_texture);
+		glBindTexture(GL_TEXTURE_2D, m_textureMap.at(m_currentButtonState));
 		
 		glDrawElements(this->GL_DRAW_MODE, 6, GL_UNSIGNED_INT, 0);
 		
@@ -94,24 +105,13 @@ namespace Engine
 		}
 	}
 
-	void Sprite::SetTexture(GLuint textureID)
+	void Button::SetTextureMap(std::map<ButtonState, GLuint> textureMap)
 	{
-		m_texture = textureID;
+		m_textureMap = textureMap;
 	}
 
-	GLuint Sprite::GetTexture()
+	const std::map<ButtonState, GLuint>& Button::GetTextureMap()
 	{
-		return m_texture;
+		return m_textureMap;
 	}
-
-	Shader* Sprite::GetShader() const
-	{
-		return m_spriteShader;
-	}
-
-	void Sprite::SetShader(Shader* shader)
-	{
-		m_spriteShader = shader;
-	}
-
 }

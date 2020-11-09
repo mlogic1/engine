@@ -1,27 +1,35 @@
 /**
-    Sprite
+    Button
 	@author mlogic1
-	@date 29.12.2018.
+	@date 05.09.2020.
 */
 
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 #include "SceneObject.h"
 #include "Shader.h"
 #include "Rect.h"
 #include <glad/glad.h>
+#include <map>
 #include <string>
 #include <vector>
 
 namespace Engine
 {
-	class Sprite : public SceneObject
+	enum class ButtonState
 	{
+		IDLE = 0,
+		HOVER,
+		PRESSED,
+		DISABLED
+	};
 
+	class Button : public SceneObject
+	{
 	public:
-		Sprite(std::string objectID, Shader* spriteShader, Rect spriteRect, GLuint textureID, std::vector<SceneObject*> nestedObjects = {});
-		~Sprite();
+		Button(std::string objectID, Shader* buttonShader, Rect buttonRect, std::map<ButtonState, GLuint> textureMap, const Vector2f& cursorPosition, std::vector<SceneObject*> nestedObjects = {});
+		~Button();
 
 		/***************************************
 		 * inherited methods
@@ -32,14 +40,14 @@ namespace Engine
 		/***************************************
 		 * textures
 		***************************************/
-		void SetTexture(GLuint textureFileName);
-		GLuint GetTexture();
-		Shader* GetShader() const;
-		void SetShader(Shader* shader);
+		void SetTextureMap(std::map<ButtonState, GLuint> textureMap);
+		const std::map<ButtonState, GLuint>& GetTextureMap();
 
 	protected:
 		// texture
-		GLuint m_texture; // gl texture ID
+		std::map<ButtonState, GLuint> m_textureMap;
+		ButtonState m_currentButtonState;
+		const Vector2f& m_cursorPosition;
 
 	private:
 		/***************************************
@@ -57,7 +65,7 @@ namespace Engine
 		const int GL_DRAW_MODE = GL_TRIANGLES;
 
 		// shader
-		Shader* m_spriteShader;
+		Shader* m_buttonShader;
 
 	private:
 		/*	default rect vertices count	*/
@@ -69,17 +77,7 @@ namespace Engine
 			0, 1, 3,
 			1, 2, 3
 		};
-
-		/* normalized texture coordinates TODO	*/
-		const float texTRX = 1.0f;
-		const float texTRY = 1.0f;
-		const float texBRX = 1.0f;
-		const float texBRY = 0.0f;
-		const float texBLX = 0.0f;
-		const float texBLY = 0.0f;
-		const float texTLX = 0.0f;
-		const float texTLY = 1.0f;
 	};
 }
 
-#endif /* Sprite_h */
+#endif /* BUTTON_H */

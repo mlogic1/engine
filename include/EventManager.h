@@ -11,7 +11,7 @@
 
 #include <vector>
 
-namespace EventSystem
+namespace Engine
 {
     void InitEventManager();
 

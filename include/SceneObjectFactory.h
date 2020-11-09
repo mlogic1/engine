@@ -8,7 +8,9 @@
 #define SCENE_OBJECT_FACTORY_H
 
 #include "Rect.h"
+#include "Button.h"
 #include <glad/glad.h>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -49,12 +51,22 @@ namespace Engine
         std::vector<TextObjectData> nestedObjects;
     };
 
+    struct ButtonObjectData
+    {
+        std::string id;
+        Rect rect;
+        std::map<ButtonState, GLuint> textureMap;
+        std::string text;
+        std::vector<ButtonObjectData> nestedObjects;
+    };
+
 	class SceneObjectFactory final
 	{
 	public:
         static SceneObject* CreateSprite(SpriteData spriteData);
         static SceneObject* CreateAnimatedSprite(AnimatedSpriteData spriteData);
         static SceneObject* CreateTextObject(std::string objectID, Rect objectRect, std::vector<SceneObject*> nestedObjects, std::string text = "");
+        static SceneObject* CreateButton(ButtonObjectData buttonData);
 	};
 }
 
