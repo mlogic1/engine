@@ -1,109 +1,104 @@
 #include "EventManager.h"
+#include "EventSubscriber.h"
 
-#include "Log.h"
-
-namespace Engine
+namespace EventSystem
 {
-    EventManager* EventManager::EVENT_MANAGER = nullptr;
+	void EventManager::CreateEvent(const std::string& eventName)
+	{
+		EventMap::iterator it = m_eventMap.find(eventName);
 
-    void InitEventManager()
-    {
-        EventManager::GetEventManager();
-    }
+		if (it != m_eventMap.end())
+		{
+			std::string error = "Event " + eventName + " already exists";
+			throw error;
+		}
 
-    EventManager::EventManager()
-    {
-    }
+		m_eventMap.emplace(eventName, std::vector<EventSubscriber*>());
+	}
 
-    EventManager::EventManager(const EventManager&)
-    {
-    }
+	void EventManager::DeleteEvent(const std::string& eventName)
+	{
+		EventMap::iterator it = m_eventMap.find(eventName);
 
-    unsigned const int EventManager::SubscribeToEvent(EventType eventType, void (*callback)())
-    {
-        unsigned const int subscriberID = this->GetFirstAvailableID();
+		if (it == m_eventMap.end())
+		{
+			std::string error = "Event " + eventName + " doesnt exist";
+			throw error;
+		}
 
-        EventSubscriber* subscriber = new EventSubscriber { subscriberID, eventType, callback };
-        this->m_eventSubscribers.push_back(subscriber);
-        Log::Write("Adding a new event subscriber: " + std::to_string(subscriberID));
+		std::vector<EventSubscriber*>& subscribers = it->second;
 
-        return subscriberID;
-    }
+		for (EventSubscriber* subscriber : subscribers)
+		{
+			subscriber->OnEventDeleted(eventName);
+		}
+	}
 
-    bool EventManager::UnSubscribeFromEvent(const unsigned int eventID)
-    {
-        bool foundEvent = false;
-        for (unsigned int i=0 ; i<this->m_eventSubscribers.size() ; i++)
-        {
-            if (this->m_eventSubscribers[i]->ID == eventID)
-            {
-                foundEvent = true;
-                Log::Write("Removing event subscription: " + std::to_string(eventID));
-                EventSubscriber* subscriber = this->m_eventSubscribers[i];
-                this->m_eventSubscribers.erase(this->m_eventSubscribers.begin() + i);
-                delete subscriber;
+	void EventManager::TriggerEvent(const std::string& eventName, EventParameter* param)
+	{
+		EventMap::iterator it = m_eventMap.find(eventName);
+		
+		if (it == m_eventMap.end())
+		{
+			std::string error = "Event " + eventName + " doesnt exist";
+			throw error;
+		}
 
-                break;
-            }
-        }
+		std::vector<EventSubscriber*>& subscribers = it->second;
 
-        if (foundEvent)
-        {
-            return true;
-        }
-        else
-        {
-            Log::Write("Attempting to unsubscribe with non-existing ID: " + std::to_string(eventID), Log::LogType::WARNING);
-            return false;
-        }
+		for (EventSubscriber* subscriber : subscribers)
+		{
+			subscriber->OnEventTriggered(eventName, param);
+		}
+	}
+	
+	void EventManager::SubscribeToEvent(EventSubscriber* subscriber, const std::string& eventName)
+	{
+		EventMap::iterator it = m_eventMap.find(eventName);
 
-    }
+		// check if event exists
+		if (it == m_eventMap.end())
+		{
+			const std::string errorMsg = "Subscribing to event failed. Event " + eventName + " does not exist";
+			throw errorMsg;
+		}
 
-    void EventManager::StartEvent(EventType eventType)
-    {
-        for (unsigned int i=0 ; i < this->m_eventSubscribers.size() ; i++)
-        {
-            if (this->m_eventSubscribers[i]->eventType == eventType)
-            {
-                this->m_eventSubscribers[i]->callback();
-            }
-        }
-    }
+		// check if subscriber is already subscribed
+		std::vector<EventSubscriber*>& subscribers = it->second;
 
-    unsigned const int EventManager::GetFirstAvailableID()
-    {
-        unsigned int firstAvailableID = 0;
+		for (EventSubscriber* eventSubscriber : subscribers)
+		{
+			if (eventSubscriber == subscriber)
+			{
+				std::string errorMsg("Subscriber already subscribed to event " + it->first);
+				throw errorMsg;
+			}
+		}
 
-        bool searching = false;
+		// add subscriber to event
+		subscribers.push_back(subscriber);
+	}
+	
+	void EventManager::UnsubscribeFromEvent(EventSubscriber* subscriber, const std::string& eventName)
+	{
+		EventMap::iterator it = m_eventMap.find(eventName);
 
-        do
-        {
-            searching = false;
+		// check if event exists
+		if (it == m_eventMap.end())
+		{
+			const std::string errorMsg = "Unsubscribing from event failed. Event " + eventName + " does not exist";
+			throw errorMsg;
+		}
 
-            for(unsigned int i=0;i<this->m_eventSubscribers.size();i++)
-            {
-                if (this->m_eventSubscribers[i]->ID == firstAvailableID)
-                {
-                    searching = true;
-                }
-            }
+		// check if subscriber is subscribed
+		std::vector<EventSubscriber*>& subscribers = it->second;
 
-            if (searching)
-            {
-                firstAvailableID++;
-            }
-        }while(searching);
-
-        return firstAvailableID;
-    }
-
-    EventManager* EventManager::GetEventManager()
-    {
-        if (EVENT_MANAGER == nullptr)
-        {
-            Log::Write("Instantiating event manager", Log::LogType::STANDARD);
-            EVENT_MANAGER = new EventManager();
-        }
-        return EVENT_MANAGER;
-    }
+		for (auto subsIter = subscribers.begin(); subsIter != subscribers.end(); ++subsIter)
+		{
+			if (*subsIter == subscriber)
+			{
+				subscribers.erase(subsIter);
+			}
+		}
+	}
 }
