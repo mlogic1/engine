@@ -7,10 +7,7 @@ namespace EventSystem
 	class EventParameterData
 	{
 	public:
-		virtual ~EventParameterData() = 0
-		{
-
-		}
+		virtual ~EventParameterData() = 0;
 	};
 
 	class EventParameter final
