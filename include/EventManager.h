@@ -1,63 +1,41 @@
 /**
-    Basic event manager. Anybody can subscribe to events that are listed in EventType enum.
-    When somebody subscribes to an event it's given an ID which must be stored in order to unsubscribe.
+    Basic event manager. Any class that needs access to event system can inherit EventSubscriber
+	and subscribe or trigger to events they need
 
 	@author mlogic1
-	@date 01.06.2019.
+	@date 08.11.2020.
 */
 
-#ifndef EVENT_MANAGER_H
-#define EVENT_MANAGER_H
+#pragma once
 
+#include "EventParameter.h"
+#include <map>
+#include <string>
 #include <vector>
 
-namespace Engine
+namespace EventSystem
 {
-    void InitEventManager();
+	class EventSubscriber;
 
-    enum EventType
-    {
-        SCENE_START = 0,
-        SCENE_END
-    };
+	using EventMap = std::map < std::string, std::vector<EventSubscriber*> >;
 
-    class EventManager
-    {
-        public:
-            static EventManager* GetEventManager();
+	class EventManager final
+	{
+	public:
+		EventManager() = default;
+		EventManager(const EventManager& other) = delete;
 
-            // returns the ID of the subscription. Subscribers are required to store their IDs so they can request deletion
-            unsigned const int SubscribeToEvent(EventType eventType, void (*callback)());
+		void CreateEvent(const std::string& eventName);
+		void DeleteEvent(const std::string& eventName);
 
-            // unsubscribe from an event using a unique ID
-            bool UnSubscribeFromEvent(const unsigned int eventID);
+	private:
+		void TriggerEvent(const std::string& eventName, EventParameter* param);
+		void SubscribeToEvent(EventSubscriber* subscriber, const std::string& eventName);
+		void UnsubscribeFromEvent(EventSubscriber* subscriber, const std::string& eventName);
 
-            // start a specific event
-            void StartEvent(EventType eventType);
+	private:
+		EventMap m_eventMap;
 
-        private:
-            EventManager();
-            EventManager(const EventManager&);
-            EventManager& operator=(const EventManager&);
-
-            struct EventSubscriber
-            {
-                unsigned const int ID;
-                EventType eventType;
-                void (*callback)();
-            };
-
-            std::vector<EventSubscriber*> m_eventSubscribers;
-
-
-            // gets first available ID
-            unsigned const int GetFirstAvailableID();
-
-            static EventManager* EVENT_MANAGER;
-    };
+		friend class EventSubscriber;
+	};
 }
-
-
-
-
-#endif // EVENT_MANAGER_H
