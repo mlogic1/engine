@@ -41,16 +41,20 @@ namespace Engine
     }
 
 
-    SceneObject* SceneObjectFactory::CreateTextObject(std::string objectID, Rect objectRect, std::vector<SceneObject*> nestedObjects, std::string text)
+    SceneObject* SceneObjectFactory::CreateTextObject(TextObjectData objectData)
     {
         Shader* fontShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("FontShader");
-		return new TextObject(objectID, fontShader, objectRect, System::SYSTEM_PTR->GetFontManager()->GetSupportedCharacters(), nestedObjects, text);
+        SceneObject* baseObject = new TextObject(objectData.id, fontShader, objectData.rect, System::SYSTEM_PTR->GetFontManager()->GetSupportedCharacters(), objectData.text);
+
+        // TODO nested objects
+
+		return baseObject;
     }
-    
+
     SceneObject* SceneObjectFactory::CreateButton(ButtonObjectData buttonData)
     {
         Shader* buttonShader = System::SYSTEM_PTR->GetShaderManager()->GetShader("OrthoShader");
-        
+
         SceneObject* baseObject = new Button(buttonData.id, buttonShader, buttonData.rect, buttonData.textureMap, System::SYSTEM_PTR->GetCursorPosition());
 
         for (int i = 0; i < buttonData.nestedObjects.size(); ++i)

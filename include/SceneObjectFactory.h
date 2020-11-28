@@ -65,7 +65,7 @@ namespace Engine
 	public:
         static SceneObject* CreateSprite(SpriteData spriteData);
         static SceneObject* CreateAnimatedSprite(AnimatedSpriteData spriteData);
-        static SceneObject* CreateTextObject(std::string objectID, Rect objectRect, std::vector<SceneObject*> nestedObjects, std::string text = "");
+        static SceneObject* CreateTextObject(TextObjectData objectData);
         static SceneObject* CreateButton(ButtonObjectData buttonData);
 	};
 }

@@ -6,8 +6,8 @@
 
 namespace Engine
 {
-	TextObject::TextObject(std::string objectID, Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters, std::vector<SceneObject*> nestedObjects, std::string text)
-		: SceneObject(fontRect, objectID, nestedObjects),
+	TextObject::TextObject(std::string objectID, Shader* fontShader, Rect fontRect, std::map<char, Character> supportedCharacters,  std::string text)
+		: SceneObject(fontRect, objectID, std::vector<SceneObject*>()),
 		m_fontShader(fontShader),
         m_characters(supportedCharacters),
 		m_text(text)

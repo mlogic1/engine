@@ -62,7 +62,12 @@ namespace SceneSystem
 
 	void Scene::InstantiateFontObject(std::string objectID, Rect fontRect, std::string text)
 	{
-		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(objectID, fontRect, std::vector<Engine::SceneObject*>(), text));
+        Engine::TextObjectData objectData;
+        objectData.id = objectID;
+        objectData.rect = fontRect;
+        objectData.text = text;
+
+		m_sceneObjects.push_back(Engine::SceneObjectFactory::CreateTextObject(objectData));
 	}
 
 	void Scene::RemoveSprite(const std::string& spriteID)
