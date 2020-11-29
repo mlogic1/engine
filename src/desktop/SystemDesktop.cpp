@@ -183,17 +183,37 @@ namespace System
 
 	void SystemDesktop::UpdateCursorPosition()
 	{
-		double x, y;
+		double cursorX, cursorY, invertedCursorY;
 		int windowWidth, windowHeight;
 		glfwGetWindowSize(m_gameWindow, &windowWidth, &windowHeight);
-		glfwGetCursorPos(m_gameWindow, &x, &y);
+		glfwGetCursorPos(m_gameWindow, &cursorX, &cursorY);
+		invertedCursorY = windowHeight - cursorY;
+
+		int viewport[4];
+		glGetIntegerv(GL_VIEWPORT, viewport);
+
+		if (cursorX < 0.0f || cursorY < 0.0f || cursorX > windowWidth || cursorY > windowHeight)
+		{
+			m_cursorPosition.Set(-1.0f, -1.0f);
+			return;
+		}
+
+		//Log::Write("VX: " + std::to_string(viewport[0]) + " VY: " + std::to_string(viewport[1]) + " VW: " + std::to_string(viewport[2]) + "VH: " + std::to_string(viewport[3]));
+
+		if (cursorX < viewport[0] || cursorX > static_cast<double>(viewport[0]) + viewport[2] || invertedCursorY < viewport[1] || invertedCursorY > static_cast<double>(viewport[1]) + viewport[3])
+		{
+			m_cursorPosition.Set(-1.0f, -1.0f);
+			return;
+		}
 		
 		// normalize mouse between viewport
-		float normX = (x) / (windowWidth);
-		float normY = (y) / (windowHeight);
+		float normalizedWindowCursorX = (cursorX) / (windowWidth);
+		float normalizedWindowCursorY = (invertedCursorY) / (windowHeight);
 
-		float normalizedX = normX * VIRTUAL_RESOLUTION_WIDTH;
-		float normalizedY = normY * VIRTUAL_RESOLUTION_HEIGHT;
+		// float normalizedViewportCursorX = 
+
+		float normalizedX = normalizedWindowCursorX * VIRTUAL_RESOLUTION_WIDTH;
+		float normalizedY = normalizedWindowCursorY * VIRTUAL_RESOLUTION_HEIGHT;
 
 		// BUG: If render mode is LetterBox and window was resized, mouse coordinates will be in window dimension instead of viewport dimensions
 		// TODO: fix this by normalizing between viewport instead of virtual resolution

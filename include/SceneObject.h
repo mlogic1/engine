@@ -58,7 +58,6 @@ namespace Engine
 			// TODO add pivots
 			// TODO z-order
 			// TODO angle
-			// TODO destination
 
 			SceneObject* m_parent = nullptr;
 			std::vector<SceneObject*> m_nestedObjects;
