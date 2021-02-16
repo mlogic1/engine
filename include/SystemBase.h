@@ -48,7 +48,7 @@ namespace System
 		virtual Vector2i GetWindowDimensions() const  = 0;
 		const Vector2f& GetCursorPosition() const;
 
-		SceneSystem::SceneManager* m_sceneManager;	// TODO move to proctected part
+		SceneSystem::SceneManager* m_sceneManager = nullptr;	// TODO move to proctected part
 
 		const Engine::ShaderManager* GetShaderManager() const;
 		const Engine::TextureManager* GetTextureManager() const;
