@@ -200,20 +200,31 @@ namespace System
 
 		//Log::Write("VX: " + std::to_string(viewport[0]) + " VY: " + std::to_string(viewport[1]) + " VW: " + std::to_string(viewport[2]) + "VH: " + std::to_string(viewport[3]));
 
+		// cursor out of bounds
 		if (cursorX < viewport[0] || cursorX > static_cast<double>(viewport[0]) + viewport[2] || invertedCursorY < viewport[1] || invertedCursorY > static_cast<double>(viewport[1]) + viewport[3])
 		{
 			m_cursorPosition.Set(-1.0f, -1.0f);
 			return;
 		}
 		
+		float normalized_viewport_x = static_cast<float>(viewport[0]) / (windowWidth);
+		float normalized_viewport_y = static_cast<float>(viewport[1]) / (windowHeight);
+		float normalized_viewport_w = 1.0f - normalized_viewport_x;
+		float normalized_viewport_h = 1.0f - normalized_viewport_y;
+
 		// normalize mouse between viewport
 		float normalizedWindowCursorX = (cursorX) / (windowWidth);
-		float normalizedWindowCursorY = (invertedCursorY) / (windowHeight);
+		float normalizedWindowCursorY = (cursorY) / (windowHeight);
+		
+		//normalizedWindowCursorX = (cursorX) / (viewport[0] + viewport[2]);
+		//normalizedWindowCursorY = (cursorY) / (viewport[1] + viewport[3]);
 
 		// float normalizedViewportCursorX = 
+		// float normalizedViewportCursorY =
 
 		float normalizedX = normalizedWindowCursorX * VIRTUAL_RESOLUTION_WIDTH;
 		float normalizedY = normalizedWindowCursorY * VIRTUAL_RESOLUTION_HEIGHT;
+		
 
 		// BUG: If render mode is LetterBox and window was resized, mouse coordinates will be in window dimension instead of viewport dimensions
 		// TODO: fix this by normalizing between viewport instead of virtual resolution
@@ -222,6 +233,7 @@ namespace System
 
 		// set cursor position in virtual resolution corrdinates
 		m_cursorPosition.Set(normalizedX, normalizedY);
+		// m_cursorPosition.Set(normalizedWindowCursorX, normalizedWindowCursorY);
 	}
 
 	void OnWindowResized(GLFWwindow * window, int width, int height)
