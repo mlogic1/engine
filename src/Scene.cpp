@@ -9,8 +9,6 @@ namespace SceneSystem
 	Scene::Scene(const std::string& SceneName, const std::string& sceneFileName) : m_sceneName(SceneName)
 	{
 		m_gameCamera = new GameCamera();
-
-
 		m_sceneObjects = Engine::SceneLoader::LoadScene(sceneFileName);
 	}
 

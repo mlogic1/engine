@@ -13,162 +13,154 @@ namespace Engine
         std::string sceneDataStr("");
         System::SYSTEM_PTR->LoadStringDataFromAssets(sceneFileName, sceneDataStr);
 
-        nlohmann::json sceneData = nlohmann::json::parse(sceneDataStr);
-        nlohmann::json sceneObjectsData = sceneData.at("SceneObjects");
-
-        try
+        tinyxml2::XMLDocument sceneDoc;
+        sceneDoc.Parse(sceneDataStr.c_str());
+        tinyxml2::XMLError error = sceneDoc.ErrorID();
+        if (error != tinyxml2::XMLError::XML_SUCCESS)
         {
-            for (auto data : sceneObjectsData.items())
-			{
-                std::string objectType = data.value()["type"];
-                nlohmann::json obj = data.value();
-
-                if (objectType == TYPE_SPRITE)
-                {
-                    SpriteData spriteData = ParseSprite(data.value());
-                    SceneObject* object = SceneObjectFactory::CreateSprite(spriteData);
-                    sceneObjects.push_back(object);
-                }
-                else if (objectType == TYPE_TEXT_OBJECT)
-                {
-                    TextObjectData objectData = ParseTextObject(data.value());
-                    SceneObject* object = SceneObjectFactory::CreateTextObject(objectData);
-                    sceneObjects.push_back(object);
-                }
-                else if (objectType == TYPE_ANIMATED_SPRITE)
-                {
-                    AnimatedSpriteData spriteData = ParseAnimatedSprite(data.value());
-                    SceneObject* object = SceneObjectFactory::CreateAnimatedSprite(spriteData);
-                    sceneObjects.push_back(object);
-                }
-                else if (objectType == TYPE_BUTTON)
-                {
-                    ButtonObjectData buttonData = ParseButtonObject(data.value());
-                    SceneObject* object = SceneObjectFactory::CreateButton(buttonData);
-                    sceneObjects.push_back(object);
-                }
-                else
-                {
-                    Log::Write("Unsupported object type in scene: " + objectType, Log::ERR);
-                }
-			}
+            Log::Write("Failed to parse " + sceneFileName + ". Faulty object.", Log::LogType::ERR);
+            throw std::string("SceneLoader: Failed parsing scene file");
         }
-        catch (nlohmann::detail::exception& exception)
-		{
-			Log::Write("Failed to parse " + sceneFileName + ". Faulty object.", Log::LogType::ERR);
-			Log::Write(exception.what());
-			throw std::string("SceneLoader: Failed parsing scene file");
-		}
+
+        tinyxml2::XMLElement* sceneRootElement = sceneDoc.FirstChildElement("Scene");
+        if (!sceneRootElement)
+        {
+            throw std::string("Error: Scene root object not found in scene");
+        }
+           
+        if (sceneRootElement->NoChildren())
+        {
+            Log::Write("Scene has no objects", Log::LogType::WARNING);
+            return sceneObjects;
+        }
+
+        for (tinyxml2::XMLElement* sceneObjectElement = sceneRootElement->FirstChildElement(); sceneObjectElement != nullptr; sceneObjectElement = sceneObjectElement->NextSiblingElement())
+        {
+            SceneObject* sceneObject = ParseElement(sceneObjectElement);
+            sceneObjects.push_back(sceneObject);
+        }
 
         return sceneObjects;
     }
 
-    SpriteData SceneLoader::ParseSprite(nlohmann::json data)
+    // TODO: some sort of id checking
+    SceneObject* SceneLoader::ParseElement(tinyxml2::XMLElement* element)
+    {
+        SceneObject* sceneObject = nullptr;
+        const char* objectType = element->Name();
+
+        if (strcmp(objectType, TYPE_SPRITE) == 0)
+        {
+            SpriteData objectData = ParseSprite(element);
+            sceneObject = SceneObjectFactory::CreateSprite(objectData);
+        }
+        else if (strcmp(objectType, TYPE_ANIMATED_SPRITE) == 0)
+        {
+            AnimatedSpriteData objectData = ParseAnimatedSprite(element);
+            sceneObject = SceneObjectFactory::CreateAnimatedSprite(objectData);
+        }
+        else if (strcmp(objectType, TYPE_TEXT_OBJECT) == 0)
+        {
+            TextObjectData objectData = ParseTextObject(element);
+            sceneObject = SceneObjectFactory::CreateTextObject(objectData);
+        }
+        else if (strcmp(objectType, TYPE_BUTTON) == 0)
+        {
+            ButtonObjectData objectData = ParseButtonObject(element);
+            sceneObject = SceneObjectFactory::CreateButton(objectData);
+        }
+        else
+        {
+            Log::Write("Unsupported object type in scene: " + std::string(objectType), Log::ERR);
+        }
+
+        // children
+        for (tinyxml2::XMLElement* child = element->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+        {
+            SceneObject* childObject = ParseElement(child);
+            sceneObject->AddNestedObject(childObject);
+        }
+
+        return sceneObject;
+    }
+
+    SpriteData SceneLoader::ParseSprite(tinyxml2::XMLElement* element)
     {
         SpriteData objectData;
 
-        std::string id = data["id"];
-        std::string textureIDStr = data["texture"];
+        std::string id = element->FindAttribute("id")->Value();
+        std::string textureIDStr = element->FindAttribute("texture")->Value();
         GLuint textureID = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureIDStr);
-
+        
         Rect spriteRect;
-        spriteRect.x = data["rect"]["x"];
-        spriteRect.y = data["rect"]["y"];
-        spriteRect.w = data["rect"]["w"];
-        spriteRect.h = data["rect"]["h"];
+        element->FindAttribute("x")->QueryIntValue(&spriteRect.x);
+        element->FindAttribute("y")->QueryIntValue(&spriteRect.y);
+        element->FindAttribute("w")->QueryIntValue(&spriteRect.w);
+        element->FindAttribute("h")->QueryIntValue(&spriteRect.h);
 
         objectData.id = id;
         objectData.texture = textureID;
         objectData.rect = spriteRect;
 
-        bool containsNested = data.contains("nested_objects");
-
-        if (containsNested)
-        {
-            for (auto nestedData : data["nested_objects"])
-            {
-                objectData.nestedObjects.push_back(ParseSprite(nestedData));    // wrong
-            }
-        }
-
         return objectData;
     }
 
-    AnimatedSpriteData SceneLoader::ParseAnimatedSprite(nlohmann::json data)
+    AnimatedSpriteData SceneLoader::ParseAnimatedSprite(tinyxml2::XMLElement* element)
     {
         AnimatedSpriteData objectData;
 
-        std::string id = data["id"];
-        std::string textureIDStr = data["texture"];
+        std::string id = element->FindAttribute("id")->Value();
+        std::string textureIDStr = element->FindAttribute("texture")->Value();
         GLuint textureID = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureIDStr);
 
         Rect spriteRect;
-        spriteRect.x = data["rect"]["x"];
-        spriteRect.y = data["rect"]["y"];
-        spriteRect.w = data["rect"]["w"];
-        spriteRect.h = data["rect"]["h"];
+        element->FindAttribute("x")->QueryIntValue(&spriteRect.x);
+        element->FindAttribute("y")->QueryIntValue(&spriteRect.y);
+        element->FindAttribute("w")->QueryIntValue(&spriteRect.w);
+        element->FindAttribute("h")->QueryIntValue(&spriteRect.h);
 
         objectData.id = id;
         objectData.texture = textureID;
         objectData.rect = spriteRect;
-        objectData.frameCount = data["frame_count"];
-        objectData.frameTime = data["frame_time"];
-        objectData.frameWidth = data["frame_width"];
-        objectData.frameHeight = data["frame_height"];
-        objectData.textureCols = data["frame_cols"];
-        objectData.textureRows = data["frame_rows"];
 
-        bool containsNested = data.contains("nested_objects");
-
-        if (containsNested)
-        {
-            for (auto nestedData : data["nested_objects"])
-            {
-                objectData.nestedObjects.push_back(ParseAnimatedSprite(nestedData));    // wrong
-            }
-        }
+        element->FindAttribute("frame_count")->QueryIntValue(&objectData.frameCount);
+        element->FindAttribute("frame_time")->QueryFloatValue(&objectData.frameTime);
+        element->FindAttribute("frame_width")->QueryIntValue(&objectData.frameWidth);
+        element->FindAttribute("frame_height")->QueryIntValue(&objectData.frameHeight);
+        element->FindAttribute("frame_cols")->QueryIntValue(&objectData.textureCols);
+        element->FindAttribute("frame_rows")->QueryIntValue(&objectData.textureRows);
 
         return objectData;
     }
 
-    TextObjectData SceneLoader::ParseTextObject(nlohmann::json data)
+    TextObjectData SceneLoader::ParseTextObject(tinyxml2::XMLElement* element)
     {
         TextObjectData objectData;
 
-        const std::string id = data["id"];
+        const std::string id = element->FindAttribute("id")->Value();
         Rect objectRect;
-        objectRect.x = data["rect"]["x"];
-        objectRect.y = data["rect"]["y"];
-        objectRect.w = data["rect"]["w"];
-        objectRect.h = data["rect"]["h"];
+        element->FindAttribute("x")->QueryIntValue(&objectRect.x);
+        element->FindAttribute("y")->QueryIntValue(&objectRect.y);
+        element->FindAttribute("w")->QueryIntValue(&objectRect.w);
+        element->FindAttribute("h")->QueryIntValue(&objectRect.h);
 
-        const std::string text = data["text"];
+        const std::string text = element->FindAttribute("text")->Value();
 
         objectData.id = id;
         objectData.rect = objectRect;
 
-        bool containsNested = data.contains("nested_objects");
-
-        if (containsNested)
-        {
-            for (auto nestedData : data["nested_objects"])
-            {
-                // TODO
-            }
-        }
-
         return objectData;
     }
 
-    ButtonObjectData SceneLoader::ParseButtonObject(nlohmann::json data)
+    ButtonObjectData SceneLoader::ParseButtonObject(tinyxml2::XMLElement* element)
     {
         ButtonObjectData buttonData;
 
-        std::string id = data["id"];
-        const std::string textureStrIdle = data["texture_idle"];
-        const std::string textureStrHover = data["texture_hover"];
-        const std::string textureStrPressed = data["texture_pressed"];
-        const std::string textureStrDisabled = data["texture_disabled"];
+        std::string id = element->FindAttribute("id")->Value();
+        const std::string textureStrIdle = element->FindAttribute("texture_idle")->Value();
+        const std::string textureStrHover = element->FindAttribute("texture_hover")->Value();
+        const std::string textureStrPressed = element->FindAttribute("texture_pressed")->Value();
+        const std::string textureStrDisabled = element->FindAttribute("texture_disabled")->Value();
 
         GLuint textureIDIdle = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrIdle);
         GLuint textureIDHover = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrHover);
@@ -176,10 +168,10 @@ namespace Engine
         GLuint textureIDDisabled = System::SYSTEM_PTR->GetTextureManager()->GetTexture(textureStrDisabled);
 
         Rect buttonRect;
-        buttonRect.x = data["rect"]["x"];
-        buttonRect.y = data["rect"]["y"];
-        buttonRect.w = data["rect"]["w"];
-        buttonRect.h = data["rect"]["h"];
+        element->FindAttribute("x")->QueryIntValue(&buttonRect.x);
+        element->FindAttribute("y")->QueryIntValue(&buttonRect.y);
+        element->FindAttribute("w")->QueryIntValue(&buttonRect.w);
+        element->FindAttribute("h")->QueryIntValue(&buttonRect.h);
 
         buttonData.id = id;
         buttonData.rect = buttonRect;
@@ -188,21 +180,11 @@ namespace Engine
         buttonData.textureMap.emplace(ButtonState::PRESSED, textureIDPressed);
         buttonData.textureMap.emplace(ButtonState::DISABLED, textureIDDisabled);
 
-        bool hasText = data.contains("text");
+        const tinyxml2::XMLAttribute* textAttribute = element->FindAttribute("text");
 
-        if (hasText)
+        if (textAttribute)
         {
-            buttonData.text = data["text"];
-        }
-
-        bool containsNested = data.contains("nested_objects");
-
-        if (containsNested)
-        {
-            for (auto nestedData : data["nested_objects"])
-            {
-                buttonData.nestedObjects.push_back(ParseButtonObject(nestedData)); // wrong
-            }
+            buttonData.text = textAttribute->Value();
         }
 
         return buttonData;

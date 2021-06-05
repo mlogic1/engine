@@ -9,9 +9,9 @@
 #include "Rect.h"
 #include "SceneObjectFactory.h"
 #include <glad/glad.h>
-#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+#include <tinyxml2.h>
 
 namespace Engine
 {
@@ -21,14 +21,15 @@ namespace Engine
             static std::vector<SceneObject*> LoadScene(const std::string& sceneName);
 
         private:
-            static const constexpr char* TYPE_SPRITE = "Sprite";
-            static const constexpr char* TYPE_ANIMATED_SPRITE = "AnimatedSprite";
-            static const constexpr char* TYPE_TEXT_OBJECT = "TextObject";
-            static const constexpr char* TYPE_BUTTON = "Button";
+            static constexpr const char* TYPE_SPRITE = "Sprite";
+            static constexpr const char* TYPE_ANIMATED_SPRITE = "AnimatedSprite";
+            static constexpr const char* TYPE_TEXT_OBJECT = "TextObject";
+            static constexpr const char* TYPE_BUTTON = "Button";
 
-            static SpriteData ParseSprite(nlohmann::json data);
-            static AnimatedSpriteData ParseAnimatedSprite(nlohmann::json data);
-            static TextObjectData ParseTextObject(nlohmann::json data);
-            static ButtonObjectData ParseButtonObject(nlohmann::json data);
+            static SceneObject* ParseElement(tinyxml2::XMLElement* element);
+            static SpriteData ParseSprite(tinyxml2::XMLElement* element);
+            static AnimatedSpriteData ParseAnimatedSprite(tinyxml2::XMLElement* element);
+            static TextObjectData ParseTextObject(tinyxml2::XMLElement* element);
+            static ButtonObjectData ParseButtonObject(tinyxml2::XMLElement* element);
     };
 }
