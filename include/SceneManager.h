@@ -25,7 +25,8 @@ namespace SceneSystem
 		void Update(float dt);
 		void SwitchScene(Scene* newScene);
 		void SwitchScene(std::string newScene);
-		void ReceiveKeyInput(System::Key Key) override;
+		void OnKeyPressed(System::Key Key) override;
+		void OnKeyReleased(System::Key Key) override;
 
 	private:
 		const System::SystemBase& m_systemRef;

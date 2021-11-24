@@ -265,56 +265,55 @@ namespace System
 			Log::Write("Key Pressed: " + std::to_string(key));
 
 			if (key == GLFW_KEY_ESCAPE)
-				SYSTEM_PTR->ReceiveKeyInput(Key::ESC);
+				SYSTEM_PTR->OnKeyPressed(Key::ESC);
 
 			if (key == GLFW_KEY_SPACE)
-				SYSTEM_PTR->ReceiveKeyInput(Key::SPACE);
+				SYSTEM_PTR->OnKeyPressed(Key::SPACE);
 
 			if (key == GLFW_KEY_Q)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Q);
+				SYSTEM_PTR->OnKeyPressed(Key::Q);
 
 			if (key == GLFW_KEY_W)
-				SYSTEM_PTR->ReceiveKeyInput(Key::W);
+				SYSTEM_PTR->OnKeyPressed(Key::W);
 
 			if (key == GLFW_KEY_A)
-				SYSTEM_PTR->ReceiveKeyInput(Key::A);
+				SYSTEM_PTR->OnKeyPressed(Key::A);
 
 			if (key == GLFW_KEY_S)
-				SYSTEM_PTR->ReceiveKeyInput(Key::S);
+				SYSTEM_PTR->OnKeyPressed(Key::S);
 
 			if (key == GLFW_KEY_D)
-				SYSTEM_PTR->ReceiveKeyInput(Key::D);
+				SYSTEM_PTR->OnKeyPressed(Key::D);
 			
 			if (key == GLFW_KEY_0)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num0);
+				SYSTEM_PTR->OnKeyPressed(Key::Num0);
 
 			if (key == GLFW_KEY_1)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num1);
+				SYSTEM_PTR->OnKeyPressed(Key::Num1);
 
 			if (key == GLFW_KEY_2)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num2);
+				SYSTEM_PTR->OnKeyPressed(Key::Num2);
 
 			if (key == GLFW_KEY_3)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num3);
+				SYSTEM_PTR->OnKeyPressed(Key::Num3);
 
 			if (key == GLFW_KEY_4)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num4);
+				SYSTEM_PTR->OnKeyPressed(Key::Num4);
 
 			if (key == GLFW_KEY_5)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num5);
+				SYSTEM_PTR->OnKeyPressed(Key::Num5);
 
 			if (key == GLFW_KEY_6)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num6);
+				SYSTEM_PTR->OnKeyPressed(Key::Num6);
 
 			if (key == GLFW_KEY_7)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num7);
+				SYSTEM_PTR->OnKeyPressed(Key::Num7);
 
 			if (key == GLFW_KEY_8)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num8);
+				SYSTEM_PTR->OnKeyPressed(Key::Num8);
 
 			if (key == GLFW_KEY_9)
-				SYSTEM_PTR->ReceiveKeyInput(Key::Num9);
-
+				SYSTEM_PTR->OnKeyPressed(Key::Num9);
 		}
 
 		if (action == GLFW_RELEASE)
@@ -331,13 +330,14 @@ namespace System
 
 			if (key == GLFW_MOUSE_BUTTON_LEFT)
 			{
-				SYSTEM_PTR->ReceiveKeyInput(Key::CURSOR);
+				SYSTEM_PTR->OnKeyPressed(Key::CURSOR);
 			}
 		}	
 
 		if (action == GLFW_RELEASE)
 		{
 			Log::Write("Key Released: " + std::to_string(key));
+			SYSTEM_PTR->OnKeyReleased(Key::CURSOR);
 		}
 	}
 
@@ -350,6 +350,7 @@ namespace System
 		SYSTEM_PTR->InitShaderManager();
 		SYSTEM_PTR->InitTextureManager();
 		SYSTEM_PTR->InitFontManager();
+		SYSTEM_PTR->SetupEvents();
 
 		return true;
 	}

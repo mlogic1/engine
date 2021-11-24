@@ -1,4 +1,5 @@
 #include "SystemBase.h"
+#include "KeyEventParameters.h"
 
 namespace System
 {
@@ -29,9 +30,20 @@ namespace System
 		return _RenderMode;
 	}
 
-	void SystemBase::ReceiveKeyInput(Key key)
+	void SystemBase::OnKeyPressed(Key key)
 	{
-		m_sceneManager->ReceiveKeyInput(key);
+		EventSystem::KeyPressedEventData data(key);
+		EventSystem::EventParameter eventParam(&data);
+		EventSystem::EVENT_MANAGER->TriggerEvent("OnKeyPressed", &eventParam);
+		m_sceneManager->OnKeyPressed(key);
+	}
+
+	void SystemBase::OnKeyReleased(Key key)
+	{
+		EventSystem::KeyReleasedEventData data(key);
+		EventSystem::EventParameter eventParam(&data);
+		EventSystem::EVENT_MANAGER->TriggerEvent("OnKeyReleased", &eventParam);
+		m_sceneManager->OnKeyReleased(key);
 	}
 
     float SystemBase::GetDeltaTime() const
@@ -62,5 +74,11 @@ namespace System
 	const Engine::FontManager* SystemBase::GetFontManager() const
 	{
 		return m_fontManager;
+	}
+	
+	void SystemBase::SetupEvents()
+	{
+		EventSystem::EVENT_MANAGER->CreateEvent("OnKeyPressed");
+		EventSystem::EVENT_MANAGER->CreateEvent("OnKeyReleased");
 	}
 }

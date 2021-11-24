@@ -27,9 +27,9 @@ namespace EventSystem
 
 		void CreateEvent(const std::string& eventName);
 		void DeleteEvent(const std::string& eventName);
+		void TriggerEvent(const std::string& eventName, EventParameter* param);
 
 	private:
-		void TriggerEvent(const std::string& eventName, EventParameter* param);
 		void SubscribeToEvent(EventSubscriber* subscriber, const std::string& eventName);
 		void UnsubscribeFromEvent(EventSubscriber* subscriber, const std::string& eventName);
 

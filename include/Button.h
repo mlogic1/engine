@@ -7,10 +7,12 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include "EventSystem.h"
 #include "SceneObject.h"
 #include "Shader.h"
 #include "Rect.h"
 #include <glad/glad.h>
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
@@ -25,11 +27,13 @@ namespace Engine
 		DISABLED
 	};
 
-	class Button : public SceneObject
+	class Button : public SceneObject, public EventSystem::EventSubscriber
 	{
 	public:
 		Button(std::string objectID, Shader* buttonShader, Rect buttonRect, std::map<ButtonState, GLuint> textureMap, const Vector2f& cursorPosition, std::vector<SceneObject*> nestedObjects = {});
 		~Button();
+
+		void SetTapCallback(std::function<void()> callback);
 
 		/***************************************
 		 * inherited methods
@@ -46,10 +50,12 @@ namespace Engine
 	protected:
 		// texture
 		std::map<ButtonState, GLuint> m_textureMap;
-		ButtonState m_currentButtonState;
+		ButtonState m_currentButtonState = ButtonState::IDLE;
 		const Vector2f& m_cursorPosition;
 
 	private:
+		std::function<void()> m_tapCallback;
+
 		/***************************************
 		 * GL
 		***************************************/
@@ -69,7 +75,7 @@ namespace Engine
 
 	private:
 		/*	default rect vertices count	*/
-		unsigned int VERTEX_COUNT = 20;
+		static constexpr unsigned int VERTEX_COUNT = 20;
 
 		/*	default rect indices	*/
 		const unsigned int m_indices[6] =
@@ -77,6 +83,9 @@ namespace Engine
 			0, 1, 3,
 			1, 2, 3
 		};
+
+	private:
+		void OnKeyReleased(EventSystem::EventParameter* param);
 	};
 }
 

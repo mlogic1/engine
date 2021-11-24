@@ -30,16 +30,26 @@ namespace System
 		return  true;
 	}*/
 
+	void SystemAndroid::Update()
+	{
+        float dt = 0.01f;
+		m_sceneManager->Update(dt);
+	}
+
 	bool SystemAndroid::IsRunning()
 	{
         // TODO fix android is running
         return true;
 	}
 
-	void SystemAndroid::Update()
+	KeyState SystemAndroid::GetKeyState(const Key& key)
 	{
-        float dt = 0.0016f;
-		m_sceneManager->Update(dt);
+		return KeyState::RELEASED;	// TODO
+	}
+
+	Vector2i SystemAndroid::GetWindowDimensions() const
+	{
+		return Vector2i(1920, 1080);	// TODO
 	}
 
 	bool SystemAndroid::LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const
@@ -88,9 +98,12 @@ namespace System
 	{
 		SYSTEM_PTR = new SystemAndroid();
 		SYSTEM_PTR->InitSystem();
+		SYSTEM_PTR->InitSceneManager();
 		SYSTEM_PTR->InitShaderManager();
 		SYSTEM_PTR->InitTextureManager();
-
+		SYSTEM_PTR->InitFontManager();
+		SYSTEM_PTR->SetupEvents();
+		
 		return true;
 	}
 

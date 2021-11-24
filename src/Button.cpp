@@ -2,6 +2,7 @@
 #include "SystemBase.h"
 #include "Log.h"
 #include "Constants.h"
+#include "KeyEventParameters.h"
 
 namespace Engine
 {
@@ -54,10 +55,17 @@ namespace Engine
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		SubscribeToEvent("OnKeyReleased", std::bind(&Button::OnKeyReleased, this, std::placeholders::_1));
 	}
 
 	Button::~Button()
 	{
+	}
+
+	void Button::SetTapCallback(std::function<void()> callback)
+	{
+		m_tapCallback = callback;
 	}
 
 	void Button::update(float deltaTime)
@@ -113,5 +121,21 @@ namespace Engine
 	const std::map<ButtonState, GLuint>& Button::GetTextureMap()
 	{
 		return m_textureMap;
+	}
+
+	void Button::OnKeyReleased(EventSystem::EventParameter* param)
+	{
+		EventSystem::KeyReleasedEventData data = param->GetParameter<EventSystem::KeyReleasedEventData>();
+		if (data.Key == System::Key::CURSOR)
+		{
+			if (m_currentButtonState == ButtonState::PRESSED)
+			{
+				if (m_tapCallback)
+				{
+					Log::Write("Sucessful button press");
+					m_tapCallback();
+				}
+			}
+		}
 	}
 }

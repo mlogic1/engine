@@ -31,7 +31,8 @@ namespace SceneSystem
 
 		void Update(float dt);
 		void Render();
-		virtual void ReceiveKeyInput(System::Key Key) override;
+		virtual void OnKeyPressed(System::Key Key) override;
+		virtual void OnKeyReleased(System::Key Key) override;
 		void InstantiateSprite(Engine::Sprite* sprite);
 		void InstantiateSprite(std::string objectID, Rect rect, const GLuint& textureID);
 		void InstantiateFontObject(std::string objectID, Rect spriteRect, std::string text);

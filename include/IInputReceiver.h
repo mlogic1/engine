@@ -8,7 +8,8 @@ namespace System
 	class IInputReceiver
 	{
 		public:
-			virtual void ReceiveKeyInput(Key key) = 0;
+			virtual void OnKeyPressed(Key key) = 0;
+			virtual void OnKeyReleased(Key key) = 0;
 	};
 }
 

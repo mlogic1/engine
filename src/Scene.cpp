@@ -39,7 +39,12 @@ namespace SceneSystem
 		RenderScene();
 	}
 
-	void Scene::ReceiveKeyInput(System::Key Key)
+	void Scene::OnKeyPressed(System::Key Key)
+	{
+
+	}
+
+	void Scene::OnKeyReleased(System::Key Key)
 	{
 
 	}

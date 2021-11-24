@@ -21,6 +21,8 @@ namespace System
 			bool InitSystem() override;
 			void Update() override;
 			bool IsRunning() override;
+			virtual KeyState GetKeyState(const Key& key) override;
+			virtual Vector2i GetWindowDimensions() const override;
 			// TODO getsystemtype
 
 			bool LoadBinaryDataFromAssets(const std::string fileName, unsigned char*& data, off_t& length) const override;

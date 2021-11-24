@@ -21,7 +21,7 @@ namespace Engine
 		public:
 			SceneObject(Rect objectRect, std::string objectID, std::vector<SceneObject*> nestedObjects, SceneObject* parent = nullptr);
 			SceneObject(Vector2f objectPosition, Vector2f objectSize, std::string objectID, std::vector<SceneObject*> nestedObjects, SceneObject* parent = nullptr);
-			~SceneObject();
+			virtual ~SceneObject();
 
 			/***************************************
 			 * inherited methods

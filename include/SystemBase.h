@@ -1,6 +1,7 @@
 #ifndef SYSTEMBASE_H
 #define SYSTEMBASE_H
 
+#include "EventSystem.h"
 #include "IInputReceiver.h"
 #include "SceneManager.h"
 #include "FontManager.h"
@@ -35,11 +36,13 @@ namespace System
 		void InitShaderManager();
 		void InitTextureManager();
 		void InitFontManager();
+		void SetupEvents();
 
 		virtual void Update() = 0;
 		virtual bool IsRunning() = 0;
 		const GLRenderMode& GetRenderMode();
-		void ReceiveKeyInput(Key key) override;
+		void OnKeyPressed(Key key) override;
+		void OnKeyReleased(Key key) override;
 		virtual KeyState GetKeyState(const Key& key) = 0;
 
 		// TODO getsystemtype
@@ -69,7 +72,7 @@ namespace System
 		float m_FPS = -1.0f;
 
 		// cursor
-		Vector2f m_cursorPosition{ -1.0f, -1.0f };
+		Vector2f m_cursorPosition{ -1.0f, -1.0f };		
 	};
 
 	extern SystemBase* SYSTEM_PTR;

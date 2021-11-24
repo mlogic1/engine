@@ -83,8 +83,13 @@ namespace SceneSystem
         }
 	}
 
-	void SceneManager::ReceiveKeyInput(System::Key Key)
+	void SceneManager::OnKeyPressed(System::Key Key)
 	{
-		this->m_currentScene->ReceiveKeyInput(Key);
+		this->m_currentScene->OnKeyPressed(Key);
+	}
+
+	void SceneManager::OnKeyReleased(System::Key Key)
+	{
+		this->m_currentScene->OnKeyReleased(Key);
 	}
 }
